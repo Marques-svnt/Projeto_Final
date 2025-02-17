@@ -41,6 +41,8 @@ add_executable(main main.c ${SRC_FILES})
 pico_set_program_name(main "main")
 pico_set_program_version(main "0.1")
 
+pico_generate_pio_header(main ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
+
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(main 1)
 pico_enable_stdio_usb(main 1)
@@ -50,7 +52,8 @@ target_link_libraries(main
         pico_stdlib
         hardware_i2c
         hardware_adc
-        hardware_pwm)
+        hardware_pwm
+        hardware_pio)
 
 # Add the standard include files to the build
 target_include_directories(main PRIVATE

@@ -4,6 +4,7 @@
 #include "hardware/pwm.h"
 #include "display.h"
 #include "pwm.h"
+#include "pio.h"
 #include "defines.h"
 
 // Inicializa o joystick
@@ -38,4 +39,5 @@ void init()
     joystick_init();
     ledg_button_init();
     pwm_slice_init();
+    initializePio();
 }

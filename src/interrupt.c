@@ -15,6 +15,8 @@ static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento 
 static volatile uint32_t last_time_B = 0;
 static volatile int choose = 1;
 
+extern int state;
+
 void display_menu()
 {
     switch (choose)
@@ -89,5 +91,9 @@ void gpio_irq_handler(uint gpio, uint32_t events)
         }
         set_one_led(choose, led_r, led_g, led_b);
         display_menu(choose);
+    }
+    else if (gpio == JOYSTICK_PB && debounce(&last_time_B, 200000))
+    {
+        state = choose; // Atribui ao estado de maquina o valor atual do menu ao pressionar o joystick
     }
 }

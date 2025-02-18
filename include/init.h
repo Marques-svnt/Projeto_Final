@@ -3,5 +3,6 @@
 
 // Função de inicialização
 void init();
+void menu_init();
 
 #endif

@@ -47,6 +47,7 @@ void led_button_init()
 // Função que vai configurar os botões do menu
 void menu_init(){
     printf("estou na menu");
+    limpar();
 
     // Exibição inicial
     set_one_led(1, 0, 0, 20);

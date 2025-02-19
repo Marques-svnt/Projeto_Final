@@ -4,6 +4,7 @@
 // Declaração da função de display
 void initI2C();
 void display(const char *texto, int x, int y);
+void display_set_temp(const char *texto, int x, int y);
 void limpar();
 
 #endif

@@ -79,8 +79,8 @@ void simular_adc_temp()
     // Converter dados digitais do ADC para os parâmetros de temperatura
     switch (unid)
     {
-    case 0:                        // Celsius
-        set_one_led(10, 0, 0, 20); // Exibi a unidade de medida na matriz
+    case 0:                              // Celsius
+        set_one_led(10, 0, 0, 20);       // Exibe a unidade de medida na matriz
 
         temp = converter_adc_para_temp(vry_value); // Converte o valor em ADC para a temperatura
 
@@ -88,10 +88,10 @@ void simular_adc_temp()
 
         alarme_crit(temp, temp_min, temp_max); // Configura o alarme
 
-        display("Celsius:", 45, 10);
+        display_set_temp("Celsius:", 36, 10);
         break;
 
-    case 1: // Kelvin
+    case 1:                              // Kelvin
         set_one_led(11, 0, 0, 20);
 
         temp = celsius_para_kelvin(converter_adc_para_temp(vry_value));
@@ -100,10 +100,10 @@ void simular_adc_temp()
 
         alarme_crit(temp, celsius_para_kelvin(temp_min), celsius_para_kelvin(temp_max));
 
-        display("Kelvin:", 45, 10);
+        display_set_temp("Kelvin:", 40, 10);
         break;
 
-    case 2: // Fahrenheit
+    case 2:                              // Fahrenheit
         set_one_led(12, 0, 0, 20);
 
         temp = celsius_para_fahrenheit(converter_adc_para_temp(vry_value));
@@ -112,13 +112,26 @@ void simular_adc_temp()
 
         alarme_crit(temp, celsius_para_fahrenheit(temp_min), celsius_para_fahrenheit(temp_max));
 
-        display("Fahrenheit:", 45, 10);
+        display_set_temp("Fahrenheit:", 24, 10);
         break;
     }
 
     converter_float_para_string(temp, temp_str, 2); // Converte para string com 1 casa decimal
-    strcat(temp_str," *C "); // Garante que um número extra não vá aparecer caso haja deslocamento com sinal de negativo ou decimais maiores
-    display(temp_str, 45, 20);
+
+    if (unid == 0)
+    {
+        strcat(temp_str, "*C ");
+    }
+    else if (unid == 1)
+    {
+        strcat(temp_str, "K ");
+    }
+    else if (unid == 2)
+    {
+        strcat(temp_str, "*F ");
+    }
+
+    display_set_temp(temp_str, 40, 25);
 }
 
 void gpio_irq_handler_temp(uint gpio, uint32_t events)
@@ -131,6 +144,7 @@ void gpio_irq_handler_temp(uint gpio, uint32_t events)
         last_time_A = current_time;
         // Altera o valor da unidade ao apertar o botao
         unid = (unid + 1) % 3; // Alterna entre 0, 1 e 2
+        display_set_temp("             ", 0, 10); // Garante que o display esteja limpo na unidade
         limpar();              // Limpa apenas quando necessário
     }
     // Volta para o menu

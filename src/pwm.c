@@ -3,7 +3,6 @@
 #include "hardware/adc.h"
 #include "hardware/pwm.h"
 #include "defines.h"
-#include "init.h"
 
 uint pwm_init_gpio(uint gpio, uint wrap)
 {
@@ -22,3 +21,4 @@ void pwm_slice_init()
     uint pwm_slice_vermelho = pwm_init_gpio(VERMELHO, pwm_wrap);
     uint pwm_slice_azul = pwm_init_gpio(AZUL, pwm_wrap);
 }
+

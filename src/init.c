@@ -5,6 +5,7 @@
 #include "interrupt.h"
 #include "display.h"
 #include "pwm.h"
+#include "buzzer_temp.h"
 #include "pio.h"
 #include "defines.h"
 
@@ -48,7 +49,7 @@ void menu_init(){
     printf("estou na menu");
 
     // Exibição inicial
-    set_one_led(0, 0, 0, 20);
+    set_one_led(1, 0, 0, 20);
     display("Sensor", 45, 20);
     display("Temperatura", 25, 35);
 
@@ -67,4 +68,5 @@ void init()
     led_button_init();
     pwm_slice_init();
     initializePio();
+    buzzer_init();
 }

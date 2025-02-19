@@ -6,6 +6,7 @@
 #include "defines.h"
 #include "converts.h"
 #include "pio.h"
+#include "buzzer_temp.h"
 #include "init.h"
 #include "display.h"
 #include "interrupt.h"
@@ -19,9 +20,9 @@ static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento 
 static volatile uint32_t last_time_B = 0;
 static volatile uint32_t last_time_J = 0;
 
-float temp;
-static volatile float temp_min = 2.0;
-static volatile float temp_max = 8.0;
+volatile float temp;
+volatile float temp_min = 2.0;
+volatile float temp_max = 8.0;
 float temp_crit_min;
 float temp_crit_max;
 
@@ -61,21 +62,24 @@ void simular_adc_temp()
     switch (unid)
     {
     case 0: // Celsius
-        set_one_led(3, 0, 0, 20);
+        set_one_led(10, 0, 0, 20);
         temp = converter_adc_para_temp(vry_value);
         controlar_leds(temp, temp_min, temp_max);
+        alarme_crit(temp, temp_min, temp_max);
         break;
 
     case 1: // Kelvin
-        set_one_led(4, 0, 0, 20);
+        set_one_led(11, 0, 0, 20);
         temp = celsius_para_kelvin(converter_adc_para_temp(vry_value));
         controlar_leds(temp, celsius_para_kelvin(temp_min), celsius_para_kelvin(temp_max));
+        alarme_crit(temp, celsius_para_kelvin(temp_min), celsius_para_kelvin(temp_max));
         break;
 
     case 2: // Fahrenheit
-        set_one_led(5, 0, 0, 20);
+        set_one_led(12, 0, 0, 20);
         temp = celsius_para_fahrenheit(converter_adc_para_temp(vry_value));
         controlar_leds(temp, celsius_para_fahrenheit(temp_min), celsius_para_fahrenheit(temp_max));
+        alarme_crit(temp, celsius_para_fahrenheit(temp_min), celsius_para_fahrenheit(temp_max));
         break;
     }
     converter_float_para_string(temp, temp_str, 2); // Converte para string com 1 casa decimal

@@ -3,7 +3,6 @@
 
 //Declaração das funções de pwm
 void pwm_slice_init();
-void leds_pwm();
-void movimentoJoystick();
+void buzz(uint freq, uint tempo);
 
 #endif

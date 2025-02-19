@@ -119,5 +119,8 @@ int temperatura()
     }
     menu_init(); // configura novamente os botões do menu
     exec = 1;    // permite que volte ao código após sair dele uma vez
+    buzzer_stop(); // garante que o buzzer desliga
+    pwm_set_gpio_level(VERMELHO, 0); // Garante que os leds não ficarão acessos
+    pwm_set_gpio_level(VERDE, 0);
     return 0;
 }

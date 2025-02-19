@@ -21,8 +21,9 @@ static volatile uint32_t last_time_B = 0;
 static volatile uint32_t last_time_J = 0;
 
 volatile float temp;
-volatile float temp_min = 30.0;
-volatile float temp_max = 90.0;
+volatile float temp_min = 1.0;
+volatile float temp_max = 20.0;
+volatile float incremento = 5.0;
 float temp_crit_min;
 float temp_crit_max;
 
@@ -54,11 +55,8 @@ void simular_adc_temp()
     sleep_us(5); // Pequeno delay para estabilidade
     uint16_t vry_value = adc_read();
 
-    float incremento_min = calcular_incremento(temp_min);
-    float incremento_max = calcular_incremento(temp_max);
-
-    temp_crit_min = temp_min - incremento_min;
-    temp_crit_max = temp_max + incremento_max;
+    temp_crit_min = temp_min - incremento;
+    temp_crit_max = temp_max + incremento;
 
     // Converter dados digitais do ADC para os parâmetros de temperatura
     switch (unid)

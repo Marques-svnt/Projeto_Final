@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include <math.h>
 #include "hardware/adc.h"
 #include "hardware/pwm.h"
 #include "defines.h"
@@ -15,8 +14,11 @@ extern float temp_crit_max;
 // Função para calcular o incremento proporcional
 float calcular_incremento(float valor)
 {
-    float ordem_grandeza = pow(10, floor(log10(valor))); // Exemplo: 5 → 1, 50 → 10, 500 → 100
-    return 2.0 * ordem_grandeza;                         // Ajuste de escala (2x a ordem de grandeza)
+    if(valor < 10){
+        return 2.0;
+    } else{
+        return 2.0 * 10;
+    }          
 }
 
 // Converter o valor do ADC para temperatura

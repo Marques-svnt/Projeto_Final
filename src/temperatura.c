@@ -5,11 +5,13 @@
 #include "hardware/pwm.h"
 #include "defines.h"
 #include "converts.h"
+#include "pio.h"
 #include "init.h"
 #include "display.h"
 #include "interrupt.h"
 #include "pwm.h"
 
+volatile int unid = 0; // Unidade de medida 0 - Celsius 1 - Kelvin 2 - Fahrenheit
 volatile int exec = 1; /* 1 - Enquanto o código estiver executando
                           0 - Enquanto quiser sair*/
 
@@ -25,6 +27,23 @@ float temp_crit_max;
 
 char temp_str[10]; // Buffer para armazenar a string
 
+void controlar_leds(float temperatura, float temp_min, float temp_max)
+{
+    if (temperatura > temp_max)
+    {
+        pwm_set_gpio_level(VERMELHO, 2 * (temperatura - temp_max) * 100);
+    }
+    else if (temperatura < temp_min)
+    {
+        pwm_set_gpio_level(AZUL, 2 * (temp_min - temperatura) * 100);
+    }
+    else
+    {
+        pwm_set_gpio_level(VERMELHO, 0);
+        pwm_set_gpio_level(AZUL, 0);
+    }
+}
+
 void simular_adc_temp()
 {
     // Configura o input do ADC
@@ -39,27 +58,28 @@ void simular_adc_temp()
     temp_crit_max = temp_max + incremento_max;
 
     // Converter dados digitais do ADC para os parâmetros de temperatura
-    temp = converter_adc_para_temp(vry_value); // Conversão para temperatura
+    switch (unid)
+    {
+    case 0: // Celsius
+        set_one_led(3, 0, 0, 20);
+        temp = converter_adc_para_temp(vry_value);
+        controlar_leds(temp, temp_min, temp_max);
+        break;
 
-    converter_float_para_string(temp, temp_str, 1); // Converte para string com 1 casa decimal
+    case 1: // Kelvin
+        set_one_led(4, 0, 0, 20);
+        temp = celsius_para_kelvin(converter_adc_para_temp(vry_value));
+        controlar_leds(temp, celsius_para_kelvin(temp_min), celsius_para_kelvin(temp_max));
+        break;
+
+    case 2: // Fahrenheit
+        set_one_led(5, 0, 0, 20);
+        temp = celsius_para_fahrenheit(converter_adc_para_temp(vry_value));
+        controlar_leds(temp, celsius_para_fahrenheit(temp_min), celsius_para_fahrenheit(temp_max));
+        break;
+    }
+    converter_float_para_string(temp, temp_str, 2); // Converte para string com 1 casa decimal
     display(temp_str, 45, 20);
-
-    printf("%.f", temp_max);
-
-    // Leds que acenderão via pwm caso os valores máximo ou mínimo sejam ultrapassados
-    if ((vry_value - 2048) > 500) // Range de 2500 até 4095
-    {
-        pwm_set_gpio_level(VERMELHO, 2 * (vry_value - 2048));
-    }
-    else if ((vry_value - 2048) < -500) // Range de 0 até 1500
-    {
-        pwm_set_gpio_level(AZUL, 2 * (-vry_value + 2048));
-    }
-    else // Range de 1500 até 2500 (definir o led desligado mesmo com variação de hardware do joystick)
-    {
-        pwm_set_gpio_level(VERMELHO, 0);
-        pwm_set_gpio_level(AZUL, 0);
-    }
 }
 
 void gpio_irq_handler_temp(uint gpio, uint32_t events)
@@ -70,6 +90,9 @@ void gpio_irq_handler_temp(uint gpio, uint32_t events)
     if (gpio == BUTTON_A && debounce(&last_time_A, 200000))
     {
         last_time_A = current_time;
+        // Altera o valor da unidade ao apertar o botao
+        unid = (unid + 1) % 3; // Alterna entre 0, 1 e 2
+        limpar();              // Limpa apenas quando necessário
     }
     // Volta para o menu
     else if (gpio == BUTTON_B && debounce(&last_time_B, 200000))

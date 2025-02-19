@@ -29,3 +29,13 @@ void converter_float_para_string(float valor, char *buffer, int casas_decimais)
 {
     sprintf(buffer, "%.*f", casas_decimais, valor);
 }
+
+float celsius_para_kelvin(float celsius)
+{
+    return celsius + 273.15;
+}
+
+float celsius_para_fahrenheit(float celsius)
+{
+    return (celsius * 9.0 / 5.0) + 32.0;
+}

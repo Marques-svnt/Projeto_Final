@@ -13,7 +13,7 @@ uint8_t led_b = 20; // Intensidade do azul
 static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento (em microssegundos)
 static volatile uint32_t last_time_B = 0;
 static volatile uint32_t last_time_J = 0;
-static volatile int choose = 1;
+static volatile int choose = 0;
 
 extern int state;
 
@@ -21,17 +21,17 @@ void display_menu()
 {
     switch (choose)
     {
-    case 1:
+    case 0:
         limpar();
         display("Sensor", 45, 20);
         display("Temperatura", 25, 35);
         break;
-    case 2:
+    case 1:
         limpar();
         display("Sensor ", 45, 20);
         display("Movimento", 25, 35);
         break;
-    case 3:
+    case 2:
         limpar();
         display("Configurar", 30, 20);
         break;
@@ -59,9 +59,9 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     if (gpio == BUTTON_A && debounce(&last_time_A, 200000))
     {
         last_time_A = current_time;
-        if (choose == 1)
+        if (choose == 0)
         {
-            choose = 3;
+            choose = 2;
         }
         else
         {
@@ -75,9 +75,9 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     {
         last_time_B = current_time;
 
-        if (choose == 3)
+        if (choose == 2)
         {
-            choose = 1;
+            choose = 0;
         }
         else
         {

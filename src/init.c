@@ -48,7 +48,7 @@ void menu_init(){
     printf("estou na menu");
 
     // Exibição inicial
-    set_one_led(1, 0, 0, 20);
+    set_one_led(0, 0, 0, 20);
     display("Sensor", 45, 20);
     display("Temperatura", 25, 35);
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
+#include "display.h"
 #include "hardware/timer.h"
 #include "temperatura.h"
 #include "defines.h"
@@ -94,9 +95,11 @@ void alarme_crit(float temp, float temp_min, float temp_max) {
         if (!alarme_ativo) {  // Se o alarme ainda não estava ligado
             alarme_ativo = true;
             add_repeating_timer_ms(INTERVALO_ALARME, alternar_alarme, NULL, &timer_alarme);
+            display("Critico",15,50);
         }
     } else {
         alarme_ativo = false;
         buzzer_stop();
+        display("        ",15,50);
     }
 }

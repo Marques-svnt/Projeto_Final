@@ -11,15 +11,6 @@
 extern float temp_crit_min;
 extern float temp_crit_max;
 
-// Função para calcular o incremento proporcional
-float calcular_incremento(float valor)
-{
-    if(valor < 10){
-        return 2.0;
-    } else{
-        return 2.0 * 10;
-    }          
-}
 
 // Converter o valor do ADC para temperatura
 float converter_adc_para_temp(uint16_t adc_value)

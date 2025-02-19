@@ -19,7 +19,6 @@ uint pwm_init_gpio(uint gpio, uint wrap)
 void pwm_slice_init()
 {
     uint pwm_wrap = 4096;
-    // Inicializa PWM para os LEDs
     uint pwm_slice_vermelho = pwm_init_gpio(VERMELHO, pwm_wrap);
     uint pwm_slice_azul = pwm_init_gpio(AZUL, pwm_wrap);
 }

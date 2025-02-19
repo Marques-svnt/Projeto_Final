@@ -4,7 +4,9 @@
 #include "hardware/adc.h"
 #include "hardware/pwm.h"
 #include "defines.h"
+#include "converts.h"
 #include "init.h"
+#include "display.h"
 #include "interrupt.h"
 #include "pwm.h"
 
@@ -15,11 +17,50 @@ static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento 
 static volatile uint32_t last_time_B = 0;
 static volatile uint32_t last_time_J = 0;
 
-static volatile float temp_min = 20.0;
-static volatile float temp_max = 80.0;
+float temp;
+static volatile float temp_min = 2.0;
+static volatile float temp_max = 8.0;
 float temp_crit_min;
 float temp_crit_max;
 
+char temp_str[10]; // Buffer para armazenar a string
+
+void simular_adc_temp()
+{
+    // Configura o input do ADC
+    adc_select_input(1);
+    sleep_us(5); // Pequeno delay para estabilidade
+    uint16_t vry_value = adc_read();
+
+    float incremento_min = calcular_incremento(temp_min);
+    float incremento_max = calcular_incremento(temp_max);
+
+    temp_crit_min = temp_min - incremento_min;
+    temp_crit_max = temp_max + incremento_max;
+
+    // Converter dados digitais do ADC para os parâmetros de temperatura
+    temp = converter_adc_para_temp(vry_value); // Conversão para temperatura
+
+    converter_float_para_string(temp, temp_str, 1); // Converte para string com 1 casa decimal
+    display(temp_str, 45, 20);
+
+    printf("%.f", temp_max);
+
+    // Leds que acenderão via pwm caso os valores máximo ou mínimo sejam ultrapassados
+    if ((vry_value - 2048) > 500) // Range de 2500 até 4095
+    {
+        pwm_set_gpio_level(VERMELHO, 2 * (vry_value - 2048));
+    }
+    else if ((vry_value - 2048) < -500) // Range de 0 até 1500
+    {
+        pwm_set_gpio_level(AZUL, 2 * (-vry_value + 2048));
+    }
+    else // Range de 1500 até 2500 (definir o led desligado mesmo com variação de hardware do joystick)
+    {
+        pwm_set_gpio_level(VERMELHO, 0);
+        pwm_set_gpio_level(AZUL, 0);
+    }
+}
 
 void gpio_irq_handler_temp(uint gpio, uint32_t events)
 {
@@ -38,36 +79,6 @@ void gpio_irq_handler_temp(uint gpio, uint32_t events)
     }
 }
 
-// Função para calcular o incremento proporcional
-float calcular_incremento(float valor) {
-    float ordem_grandeza = pow(10, floor(log10(valor)));  // Exemplo: 5 → 1, 50 → 10, 500 → 100
-    return 2.0 * ordem_grandeza;  // Ajuste de escala (2x a ordem de grandeza)
-}
-
-// Converter o valor do ADC para temperatura
-float converter_adc_para_temp(uint16_t adc_value) {
-    return temp_crit_min + ((adc_value / 4096.0) * (temp_crit_max - temp_crit_min));
-}
-
-void simular_adc_temp()
-{
-    // Configura o input do ADC
-    adc_select_input(1);
-    sleep_us(5);                     // Pequeno delay para estabilidade
-    uint16_t vry_value = adc_read(); 
-
-    float incremento_min = calcular_incremento(temp_min);
-    float incremento_max = calcular_incremento(temp_max);
-
-    temp_crit_min = temp_min - incremento_min;
-    temp_crit_max = temp_max + incremento_max;
-
-    // Converter dados digitais do ADC para os parâmetros de temperatura
-    float temperatura = converter_adc_para_temp(vry_value);  // Conversão para temperatura
-
-    printf("%.f",temperatura);
-}
-
 int temperatura()
 {
     printf("estou na temp");
@@ -79,6 +90,7 @@ int temperatura()
         simular_adc_temp();
         sleep_ms(50);
     }
-    menu_init();
+    menu_init(); // configura novamente os botões do menu
+    exec = 1;    // permite que volte ao código após sair dele uma vez
     return 0;
 }

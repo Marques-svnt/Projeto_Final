@@ -33,11 +33,6 @@ void display_menu()
         break;
     case 3:
         limpar();
-        display("Sensor ", 45, 20);
-        display("Cardiaco", 25, 35);
-        break;
-    case 4:
-        limpar();
         display("Configurar", 30, 20);
         break;
     }
@@ -66,7 +61,7 @@ void gpio_irq_handler(uint gpio, uint32_t events)
         last_time_A = current_time;
         if (choose == 1)
         {
-            choose = 4;
+            choose = 3;
         }
         else
         {
@@ -80,7 +75,7 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     {
         last_time_B = current_time;
 
-        if (choose == 4)
+        if (choose == 3)
         {
             choose = 1;
         }
@@ -95,5 +90,7 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     {
         last_time_J = current_time;
         state = choose; // Atribui ao estado de maquina o valor atual do menu ao pressionar o joystick
+        set_one_led(0, 0, 0, 0); // Limpa a matriz de leds
+        limpar(); // Limpa o display
     }
 }

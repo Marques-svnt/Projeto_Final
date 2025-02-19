@@ -21,7 +21,7 @@ void joystick_init()
     gpio_pull_up(JOYSTICK_PB);
 }
 
-// Configura o botão A e o led verde
+// Configura o botão A e os leds
 void led_button_init()
 {
 

@@ -90,7 +90,7 @@ bool alternar_alarme(struct repeating_timer *t) {
 
 // Ativa ou desativa o alarme conforme a temperatura
 void alarme_crit(float temp, float temp_min, float temp_max) {
-    if (temp > temp_max || temp < temp_min) {
+    if (temp > (temp_max-0.5) || temp < (temp_min + 0.5)) {
         if (!alarme_ativo) {  // Se o alarme ainda não estava ligado
             alarme_ativo = true;
             add_repeating_timer_ms(INTERVALO_ALARME, alternar_alarme, NULL, &timer_alarme);

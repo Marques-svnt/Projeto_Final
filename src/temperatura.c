@@ -21,8 +21,8 @@ static volatile uint32_t last_time_B = 0;
 static volatile uint32_t last_time_J = 0;
 
 volatile float temp;
-volatile float temp_min = 2.0;
-volatile float temp_max = 8.0;
+volatile float temp_min = 30.0;
+volatile float temp_max = 90.0;
 float temp_crit_min;
 float temp_crit_max;
 
@@ -33,15 +33,17 @@ void controlar_leds(float temperatura, float temp_min, float temp_max)
     if (temperatura > temp_max)
     {
         pwm_set_gpio_level(VERMELHO, 2 * (temperatura - temp_max) * 100);
+        pwm_set_gpio_level(VERDE, 0);
     }
     else if (temperatura < temp_min)
     {
-        pwm_set_gpio_level(AZUL, 2 * (temp_min - temperatura) * 100);
+        pwm_set_gpio_level(VERMELHO, 2 * (temp_min - temperatura) * 100);
+        pwm_set_gpio_level(VERDE, 0);
     }
     else
     {
         pwm_set_gpio_level(VERMELHO, 0);
-        pwm_set_gpio_level(AZUL, 0);
+        pwm_set_gpio_level(VERDE, 1024);
     }
 }
 
@@ -62,10 +64,10 @@ void simular_adc_temp()
     switch (unid)
     {
     case 0: // Celsius
-        set_one_led(10, 0, 0, 20);
-        temp = converter_adc_para_temp(vry_value);
-        controlar_leds(temp, temp_min, temp_max);
-        alarme_crit(temp, temp_min, temp_max);
+        set_one_led(10, 0, 0, 20); // Exibi a unidade de medida na matriz
+        temp = converter_adc_para_temp(vry_value); // Converte o valor em ADC para a temperatura
+        controlar_leds(temp, temp_min, temp_max); // Configura os leds PWM
+        alarme_crit(temp, temp_min, temp_max); // Configura o alarme
         break;
 
     case 1: // Kelvin

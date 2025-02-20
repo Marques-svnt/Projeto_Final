@@ -28,11 +28,6 @@ void display_menu()
         break;
     case 2:
         limpar();
-        display("Sensor ", 45, 20);
-        display("Movimento", 25, 35);
-        break;
-    case 3:
-        limpar();
         display("Configurar", 30, 20);
         break;
     }
@@ -61,7 +56,7 @@ void gpio_irq_handler(uint gpio, uint32_t events)
         last_time_A = current_time;
         if (choose == 1)
         {
-            choose = 3;
+            choose = 2;
         }
         else
         {
@@ -75,7 +70,7 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     {
         last_time_B = current_time;
 
-        if (choose == 3)
+        if (choose == 2)
         {
             choose = 1;
         }

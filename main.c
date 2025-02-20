@@ -18,13 +18,12 @@
 #include "pwm.h"
 #include "pio.h"
 
-// Headers dos sensores
+// Headers do simulador
 #include "temperatura.h"
 
 volatile int state = 0; /* 0 - Menu (inicialmente configurado)
                            1 - Sensor de Temperatura
-                           2 - Sensor de Presença
-                           3 - Configurações*/
+                           2 - Configurações*/
 int main()
 {
 
@@ -45,11 +44,6 @@ int main()
             printf("Temp\n");
             break;
         case 2:
-            state = 0; // Limpa o buffer
-            // Código do alarme
-            printf("alarme\n");
-            break;
-        case 3:
             state = 0; // Limpa o buffer
             // Código da config
             printf("Config\n");

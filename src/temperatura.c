@@ -153,7 +153,12 @@ void gpio_irq_handler_temp(uint gpio, uint32_t events)
         last_time_B = current_time;
         exec = 0;
         alarme_ativo = false;            // flag que desliga o som do buzzer
-        buzzer_stop();                   // garante que o buzzer desliga
+
+        uint slice_num = pwm_gpio_to_slice_num(BUZZER);
+        uint channel = pwm_gpio_to_channel(BUZZER);
+        // Desabilitar PWM
+        pwm_set_enabled(slice_num, false);               // garante que o buzzer desliga
+
         pwm_set_gpio_level(VERMELHO, 0); // Garante que os leds não ficarão acessos
         pwm_set_gpio_level(VERDE, 0);
 

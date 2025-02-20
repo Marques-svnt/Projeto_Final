@@ -10,9 +10,9 @@ uint8_t led_g = 0;  // Intensidade do verde
 uint8_t led_b = 20; // Intensidade do azul
 
 // Variáveis globais
-static volatile uint a = 1;
 static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento (em microssegundos)
 static volatile uint32_t last_time_B = 0;
+static volatile uint32_t last_time_J = 0;
 static volatile int choose = 1;
 
 extern int state;
@@ -27,16 +27,6 @@ void display_menu()
         display("Temperatura", 25, 35);
         break;
     case 2:
-        limpar();
-        display("Sensor ", 45, 20);
-        display("Movimento", 25, 35);
-        break;
-    case 3:
-        limpar();
-        display("Sensor ", 45, 20);
-        display("Cardiaco", 25, 35);
-        break;
-    case 4:
         limpar();
         display("Configurar", 30, 20);
         break;
@@ -64,10 +54,9 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     if (gpio == BUTTON_A && debounce(&last_time_A, 200000))
     {
         last_time_A = current_time;
-
         if (choose == 1)
         {
-            choose = 4;
+            choose = 2;
         }
         else
         {
@@ -81,7 +70,7 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     {
         last_time_B = current_time;
 
-        if (choose == 4)
+        if (choose == 2)
         {
             choose = 1;
         }
@@ -94,6 +83,9 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     }
     else if (gpio == JOYSTICK_PB && debounce(&last_time_B, 200000))
     {
+        last_time_J = current_time;
         state = choose; // Atribui ao estado de maquina o valor atual do menu ao pressionar o joystick
+        set_one_led(0, 0, 0, 0); // Limpa a matriz de leds
+        limpar(); // Limpa o display
     }
 }

@@ -2,8 +2,10 @@
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
 #include "hardware/pwm.h"
+#include "interrupt.h"
 #include "display.h"
 #include "pwm.h"
+#include "buzzer_temp.h"
 #include "pio.h"
 #include "defines.h"
 
@@ -20,7 +22,7 @@ void joystick_init()
     gpio_pull_up(JOYSTICK_PB);
 }
 
-// Configura o botão A e o led verde
+// Configura o botão A e os leds
 void led_button_init()
 {
 
@@ -42,6 +44,22 @@ void led_button_init()
     gpio_set_dir(AZUL, GPIO_OUT);
 }
 
+// Função que vai configurar os botões do menu
+void menu_init(){
+    printf("estou na menu");
+    limpar();
+
+    // Exibição inicial
+    set_one_led(1, 0, 0, 20);
+    display("Sensor", 45, 20);
+    display("Temperatura", 25, 35);
+
+    // Configuração da interrupção com callback
+    gpio_set_irq_enabled_with_callback(BUTTON_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
+    gpio_set_irq_enabled_with_callback(BUTTON_B, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
+    gpio_set_irq_enabled_with_callback(JOYSTICK_PB, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
+}
+
 // Faz todas as inicializações do projeto
 void init()
 {
@@ -51,4 +69,5 @@ void init()
     led_button_init();
     pwm_slice_init();
     initializePio();
+    buzzer_init();
 }

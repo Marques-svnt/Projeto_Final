@@ -27,16 +27,25 @@ void initI2C()
     ssd1306_send_data(&ssd);
 }
 
-
 // Função que recebe o texto e coordenadas para exibir no display a mensagem
 void display(const char *texto, int x, int y)
 {
     // Atualiza o conteúdo do display com animações
-    ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor);    // Desenha um retângulo
-    ssd1306_draw_string(&ssd, texto, x, y);        // Desenha a string passada como argumento
-    ssd1306_send_data(&ssd);                         // Atualiza o display
+    ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
+    ssd1306_draw_string(&ssd, texto, x, y);       // Desenha a string passada como argumento
+    ssd1306_send_data(&ssd);                      // Atualiza o display
 }
 
-void limpar(){
+void limpar()
+{
     ssd1306_fill(&ssd, false);
+}
+
+void display_set_temp(const char *texto, int x, int y)
+{
+    // Atualiza o conteúdo do display com animações
+    ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
+    ssd1306_rect(&ssd, 3, 3, 122, 40, cor, !cor);
+    ssd1306_draw_string(&ssd, texto, x, y);       // Desenha a string passada como argumento
+    ssd1306_send_data(&ssd);                      // Atualiza o display
 }

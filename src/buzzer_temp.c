@@ -27,19 +27,6 @@ void buzzer_init()
     pwm_set_enabled(slice_num, false);
 }
 
-// Define o volume (0 a 100%)
-void set_volume(uint new_volume)
-{
-    if (new_volume > VOLUME_MAX)
-    {
-        volume = VOLUME_MAX;
-    }
-    else
-    {
-        volume = new_volume;
-    }
-}
-
 // Ajusta a frequência do buzzer
 void buzz(uint freq)
 {

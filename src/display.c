@@ -7,7 +7,7 @@
 bool cor = true;
 ssd1306_t ssd;
 
-extern bool rect_estado;
+extern int clean;
 
 void initI2C()
 {

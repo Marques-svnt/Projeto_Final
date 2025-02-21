@@ -21,9 +21,9 @@ static volatile uint32_t last_time_B = 0;
 static volatile uint32_t last_time_J = 0;
 
 volatile float temp;
-volatile float temp_min = 2.0;
-volatile float temp_max = 8.0;
-volatile float incremento = 5.0;
+extern volatile float temp_min;
+extern volatile float temp_max;
+extern volatile float incremento;
 float temp_crit_min;
 float temp_crit_max;
 

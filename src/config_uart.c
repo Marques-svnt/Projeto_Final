@@ -6,13 +6,46 @@
 #include "init.h"
 #include "pico/bootrom.h"
 
-// Váriaveis globais configuráveis  padrão do projeto
-volatile float temp_min = 2.0;
-volatile float temp_max = 8.0;
-volatile float incremento = 5.0;
+// Valores de fábrica
+const float temp_min_fabrica = 2.0;
+const float temp_max_fabrica = 8.0;
+const float incremento_fabrica = 5.0;
+
+// Váriaveis globais configuráveis do projeto
+volatile float temp_min = temp_min_fabrica;
+volatile float temp_max = temp_max_fabrica;
+volatile float incremento = incremento_fabrica;
+
+// Função para resetar as configurações para os valores de fábrica
+void reset_config_fabrica()
+{
+    temp_min = temp_min_fabrica;
+    temp_max = temp_max_fabrica;
+    incremento = incremento_fabrica;
+    printf("Configurações de fábrica restauradas.\n");
+}
+
+// Função para verificar se as configurações estão no valor de fábrica
+bool verificar_config_fabrica()
+{
+    if (temp_min == temp_min_fabrica && temp_max == temp_max_fabrica && incremento == incremento_fabrica)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 int config_temp()
 {
+    temp_min = 2.3;
+    return config();
+}
+
+int return_config(){
+    return config();
 }
 
 int config()
@@ -46,7 +79,32 @@ int config()
             // Código das configurações gerais
             break;
         case 3:
-            // Código das configurações gerais
+            // Verifica se as configurações já estão nos valores de fábrica
+            if (verificar_config_fabrica())
+            {
+                printf("As configurações já estão nos valores de fábrica:\n");
+                printf("Temperatura mínima para exibir alerta: %.2fºC\n", temp_min);
+                printf("Temperatura máxima para exibir alerta: %.2fºC\n", temp_max);
+                printf("Valor do incremento em relação às temperaturas máxima e mínima que serão simuladas: %.2fºC\n", incremento);
+
+                printf("\nEnvie qualquer caractere para continuar...\n");
+
+                // Espera o usuário pressionar Enter
+                getchar(); // Captura o Enter
+
+                // Retorna as configurações de fábrica (caso precise de algo específico, adicione aqui)
+                printf("Voltando às configurações...\n");
+
+                return_config();
+            }
+            else
+            {
+                // Se não estiver, faz o reset
+                printf("As configurações não estão nos valores de fábrica.\nReconfigurando...\n");
+                sleep_ms(2000);
+                reset_config_fabrica();
+                return_config();
+            }
             break;
         case 4:
             display("Entrando em", 20, 22);

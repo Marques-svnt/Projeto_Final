@@ -20,6 +20,7 @@
 
 // Headers do simulador
 #include "temperatura.h"
+#include "config_uart.h"
 
 volatile int state = 0; /* 0 - Menu (inicialmente configurado)
                            1 - Sensor de Temperatura
@@ -45,7 +46,7 @@ int main()
             break;
         case 2:
             state = 0; // Limpa o buffer
-            // Código da config
+            config();
             printf("Config\n");
             break;
         }

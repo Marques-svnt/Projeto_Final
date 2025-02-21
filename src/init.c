@@ -9,6 +9,8 @@
 #include "pio.h"
 #include "defines.h"
 
+extern int choose;
+
 // Inicializa o joystick
 void joystick_init()
 {
@@ -54,6 +56,8 @@ void menu_init(){
     display("Sensor", 45, 20);
     display("Temperatura", 25, 35);
 
+    choose = 1;
+
     // Configuração da interrupção com callback
     gpio_set_irq_enabled_with_callback(BUTTON_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
     gpio_set_irq_enabled_with_callback(BUTTON_B, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
@@ -65,6 +69,7 @@ void init()
 {
     stdio_init_all();
     initI2C();
+    uart_init(uart0,115200);
     joystick_init();
     led_button_init();
     pwm_slice_init();

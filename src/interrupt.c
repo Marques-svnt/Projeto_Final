@@ -13,7 +13,7 @@ uint8_t led_b = 20; // Intensidade do azul
 static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento (em microssegundos)
 static volatile uint32_t last_time_B = 0;
 static volatile uint32_t last_time_J = 0;
-static volatile int choose = 1;
+volatile int choose = 1;
 
 extern int state;
 

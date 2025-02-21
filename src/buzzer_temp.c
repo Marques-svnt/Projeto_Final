@@ -99,7 +99,7 @@ void alarme_crit(float temp, float temp_min, float temp_max)
         { // Se o alarme ainda não estava ligado
             alarme_ativo = true;
             add_repeating_timer_ms(INTERVALO_ALARME, alternar_alarme, NULL, &timer_alarme);
-            display("INSTAVEL!", 28, 48);
+            display("() INSTAVEL ()", 8, 48);
         }
     }
     else
@@ -110,6 +110,6 @@ void alarme_crit(float temp, float temp_min, float temp_max)
 
         // Desabilitar PWM
         pwm_set_enabled(slice_num, false);
-        display(" ESTAVEL ", 28, 48);
+        display("    ESTAVEL   ", 8, 48);
     }
 }

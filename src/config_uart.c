@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "pico/stdlib.h"
+#include "hardware/pwm.h"
 #include "display.h"
+#include "defines.h"
 #include "config_uart.h"
 #include "init.h"
 #include "pico/bootrom.h"
@@ -40,11 +42,44 @@ bool verificar_config_fabrica()
 
 int config_temp()
 {
-    temp_min = 2.3;
-    return config();
+    printf("\033[H\033[J"); // Limpa o serial
+    printf("1 - Alterar valor da temperatura máxima\n");
+    printf("2 - Alterar valor da temperatura mínima\n");
+    printf("3 - Alterar valor do incremento\n");
+    printf("4 - Salvar configurações e sair\n");
+    printf("5 - Sair sem salvar\n");
+
+    char entrada = getchar();    // Captura um único caractere
+    int escolha = entrada - '0'; // Converte de char para inteiro
+
+    if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
+    {
+        printf("Opção inválida!\n\n");
+        return config(); // Chama a função novamente
+    }
+
+    switch (escolha)
+    {
+    case 1:
+        config_temp();
+        break;
+    case 2:
+        config_temp();
+        break;
+    case 3:
+        config_temp();
+        break;
+    case 4:
+        config_temp();
+        break;
+    case 5:
+        config();
+        break;
+    }
 }
 
-int return_config(){
+int return_config()
+{
     return config();
 }
 
@@ -61,16 +96,16 @@ int config()
         printf("5 - Voltar ao menu\n");
         printf("Escolha uma opção: ");
 
-        char entrada = getchar();      // Captura um único caractere
-        int escolha_1 = entrada - '0'; // Converte de char para inteiro
+        char entrada = getchar();    // Captura um único caractere
+        int escolha = entrada - '0'; // Converte de char para inteiro
 
-        if (!(escolha_1 >= 1 && escolha_1 <= 5)) // Verifica entrada inválida
+        if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
         {
             printf("Opção inválida!\n\n");
             return config(); // Chama a função novamente
         }
 
-        switch (escolha_1)
+        switch (escolha)
         {
         case 1:
             config_temp();
@@ -122,12 +157,14 @@ int config()
     }
     else
     {
+        pwm_set_gpio_level(VERMELHO, 2048);
         limpar();
         display("Ative o Serial", 8, 10);
         display("Monitor", 36, 22);
         display("e tente", 36, 34);
         display("novamente", 28, 46);
         sleep_ms(4000);
+        pwm_set_gpio_level(VERMELHO, 0);
     }
 
     menu_init(); // configura novamente os botões do menu

@@ -11,6 +11,7 @@
 #include "display.h"
 #include "interrupt.h"
 #include "pwm.h"
+#include "config_uart_functions.h"
 
 volatile int unid = 0; // Unidade de medida 0 - Celsius 1 - Kelvin 2 - Fahrenheit
 volatile int exec = 1; /* 1 - Enquanto o código estiver executando
@@ -18,14 +19,8 @@ volatile int exec = 1; /* 1 - Enquanto o código estiver executando
 
 static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento (em microssegundos)
 static volatile uint32_t last_time_B = 0;
-static volatile uint32_t last_time_J = 0;
 
 volatile float temp;
-extern volatile float temp_min;
-extern volatile float temp_max;
-extern volatile float incremento;
-float temp_crit_min;
-float temp_crit_max;
 
 extern volatile bool alarme_ativo;
 
@@ -73,8 +68,10 @@ void simular_adc_temp()
     sleep_us(5); // Pequeno delay para estabilidade
     uint16_t vry_value = adc_read();
 
-    temp_crit_min = temp_min - incremento;
     temp_crit_max = temp_max + incremento;
+    temp_crit_min = temp_min - incremento;
+    
+    printf("Teste: %.2f %.2f %.2f %.2f\n\n",temp_crit_min,temp_crit_max, temp_min, temp_max);
 
     // Converter dados digitais do ADC para os parâmetros de temperatura
     switch (unid)

@@ -186,6 +186,8 @@ void ssd1306_draw_char(ssd1306_t *ssd, char c, uint8_t x, uint8_t y)
   {
     index = (c - 'a' + 37) * 8; // Para letras minúsculas
   }
+
+  // Caracteres especiais
   else if (c == '*') // Para o caractere 'º' (usaremos * por não ter º)
   {
     index = 63 * 8;  // Índice para o caractere 'º'
@@ -205,6 +207,22 @@ void ssd1306_draw_char(ssd1306_t *ssd, char c, uint8_t x, uint8_t y)
   else if (c == '!') // Para o caractere '-'
   {
     index = 67 * 8;  // Índice para o caractere '.'
+  }
+  else if (c == '(') // Para o caractere '('
+  {
+    index = 68 * 8;  // Índice para o caractere '(' representando sinal de alerta
+  }
+  else if (c == ')') // Para o caractere ')'
+  {
+    index = 69 * 8;  // Índice para o caractere ')' representando sinal de alerta
+  }
+  else if (c == '>') // Para o caractere '>'
+  {
+    index = 70 * 8;  // Índice para o caractere '>' representando uma ->
+  }
+  else if (c == '<') // Para o caractere '<'
+  {
+    index = 71 * 8;  // Índice para o caractere '<' representando uma <-
   }
   for (uint8_t i = 0; i < 8; ++i)
   {

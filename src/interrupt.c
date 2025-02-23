@@ -12,8 +12,7 @@ uint8_t led_b = 20; // Intensidade do azul
 // Variáveis globais
 static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento (em microssegundos)
 static volatile uint32_t last_time_B = 0;
-static volatile uint32_t last_time_J = 0;
-static volatile int choose = 1;
+volatile int choose = 1;
 
 extern int state;
 
@@ -23,12 +22,14 @@ void display_menu()
     {
     case 1:
         limpar();
-        display("Sensor", 45, 20);
-        display("Temperatura", 25, 35);
+        display("Sensor", 40, 15);
+        display("Temperatura", 20, 25);
+        display(" <     B     >",4,45);
         break;
     case 2:
         limpar();
-        display("Configurar", 30, 20);
+        display("Configurar", 24, 20);
+        display(" <     B     >",4,45);
         break;
     }
 }
@@ -54,38 +55,18 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     if (gpio == BUTTON_A && debounce(&last_time_A, 200000))
     {
         last_time_A = current_time;
-        if (choose == 1)
-        {
-            choose = 2;
-        }
-        else
-        {
-            choose--;
-        }
-        set_one_led(choose, led_r, led_g, led_b);
-        display_menu(choose);
+        state = choose; // Atribui ao estado de maquina o valor atual do menu ao pressionar o joystick
+        set_one_led(0, 0, 0, 0); // Limpa a matriz de leds
+        limpar(); // Limpa o display
     }
     // Decrementação do número da matriz de leds
     else if (gpio == BUTTON_B && debounce(&last_time_B, 200000))
     {
         last_time_B = current_time;
 
-        if (choose == 2)
-        {
-            choose = 1;
-        }
-        else
-        {
-            choose++;
-        }
+        choose = (choose % 2) + 1; // Alterna entre 1 e 2
+
         set_one_led(choose, led_r, led_g, led_b);
         display_menu(choose);
-    }
-    else if (gpio == JOYSTICK_PB && debounce(&last_time_B, 200000))
-    {
-        last_time_J = current_time;
-        state = choose; // Atribui ao estado de maquina o valor atual do menu ao pressionar o joystick
-        set_one_led(0, 0, 0, 0); // Limpa a matriz de leds
-        limpar(); // Limpa o display
     }
 }

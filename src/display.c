@@ -7,7 +7,7 @@
 bool cor = true;
 ssd1306_t ssd;
 
-extern bool rect_estado;
+extern int clean;
 
 void initI2C()
 {
@@ -32,6 +32,7 @@ void display(const char *texto, int x, int y)
 {
     // Atualiza o conteúdo do display com animações
     ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
+    ssd1306_rect(&ssd, 3, 3, 123, 59, cor, !cor);
     ssd1306_draw_string(&ssd, texto, x, y);       // Desenha a string passada como argumento
     ssd1306_send_data(&ssd);                      // Atualiza o display
 }
@@ -45,7 +46,10 @@ void display_set_temp(const char *texto, int x, int y)
 {
     // Atualiza o conteúdo do display com animações
     ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
+    ssd1306_rect(&ssd, 3, 3, 123, 59, cor, !cor);
     ssd1306_rect(&ssd, 3, 3, 122, 40, cor, !cor);
+    ssd1306_rect(&ssd, 3, 3, 122, 39, cor, !cor);
+    ssd1306_rect(&ssd, 3, 3, 122, 41, cor, !cor);
     ssd1306_draw_string(&ssd, texto, x, y);       // Desenha a string passada como argumento
     ssd1306_send_data(&ssd);                      // Atualiza o display
 }

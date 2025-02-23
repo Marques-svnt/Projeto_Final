@@ -13,7 +13,7 @@
 #define VOLUME_MAX 100 // Volume máximo (100%)
 #define VOLUME_MIN 0   // Volume mínimo (0%)
 
-uint volume = 50; // Volume global (padrão: 50%)
+uint volume = 0; // Volume global (padrão: 50%)
 
 volatile bool alarme_ativo = false;
 volatile uint freq_atual = FREQ_MIN;
@@ -25,19 +25,6 @@ void buzzer_init()
     gpio_set_function(BUZZER, GPIO_FUNC_PWM);
     uint slice_num = pwm_gpio_to_slice_num(BUZZER);
     pwm_set_enabled(slice_num, false);
-}
-
-// Define o volume (0 a 100%)
-void set_volume(uint new_volume)
-{
-    if (new_volume > VOLUME_MAX)
-    {
-        volume = VOLUME_MAX;
-    }
-    else
-    {
-        volume = new_volume;
-    }
 }
 
 // Ajusta a frequência do buzzer
@@ -112,7 +99,7 @@ void alarme_crit(float temp, float temp_min, float temp_max)
         { // Se o alarme ainda não estava ligado
             alarme_ativo = true;
             add_repeating_timer_ms(INTERVALO_ALARME, alternar_alarme, NULL, &timer_alarme);
-            display("INSTAVEL!", 28, 48);
+            display("() INSTAVEL ()", 8, 48);
         }
     }
     else
@@ -123,6 +110,6 @@ void alarme_crit(float temp, float temp_min, float temp_max)
 
         // Desabilitar PWM
         pwm_set_enabled(slice_num, false);
-        display(" ESTAVEL ", 28, 48);
+        display("    ESTAVEL   ", 8, 48);
     }
 }

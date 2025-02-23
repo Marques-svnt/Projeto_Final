@@ -71,7 +71,7 @@ void simular_adc_temp()
     temp_crit_max = temp_max + incremento;
     temp_crit_min = temp_min - incremento;
     
-    printf("Teste: %.2f %.2f %.2f %.2f\n\n",temp_crit_min,temp_crit_max, temp_min, temp_max);
+    //printf("Teste: %.2f %.2f %.2f %.2f\n\n",temp_crit_min,temp_crit_max, temp_min, temp_max); Debug
 
     // Converter dados digitais do ADC para os parâmetros de temperatura
     switch (unid)

@@ -13,7 +13,7 @@
 #define VOLUME_MAX 100 // Volume máximo (100%)
 #define VOLUME_MIN 0   // Volume mínimo (0%)
 
-uint volume = 50; // Volume global (padrão: 50%)
+uint volume = 0; // Volume global (padrão: 50%)
 
 volatile bool alarme_ativo = false;
 volatile uint freq_atual = FREQ_MIN;

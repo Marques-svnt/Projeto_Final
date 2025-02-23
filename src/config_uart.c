@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 #include "display.h"
@@ -17,6 +18,55 @@ const float incremento_fabrica = 5.0;
 volatile float temp_min = temp_min_fabrica;
 volatile float temp_max = temp_max_fabrica;
 volatile float incremento = incremento_fabrica;
+
+volatile float temp_min_temporario;
+volatile float temp_max_temporario;
+volatile float incremento_temporario;
+
+void save_and_quit(){
+    temp_min = temp_min_temporario;
+    temp_max = temp_max_temporario;
+    incremento = incremento_temporario;
+    config();
+}
+
+void no_save(){
+    temp_min_temporario = temp_min_fabrica;
+    temp_max_temporario = temp_max_fabrica;
+    incremento_temporario = incremento_fabrica;
+    config();
+}
+
+// Função responsável por alterar valores
+int alterar_valor(int alterar)
+{
+    float valor;
+    printf("Digite o novo valor: ");
+    if (scanf("%f", &valor) == 1)
+    { // Verifica se a leitura de um float foi bem-sucedida
+        switch (alterar)
+        {
+        case 1:
+            temp_max_temporario = valor;
+            printf("Temperatura máxima temporária alterada de %.2f ºC para: %.2f ºC\n", temp_max, temp_max_temporario);
+            return config_temp();
+            break;
+        case 2:
+            temp_min_temporario = valor;
+            printf("Temperatura mínima temporária alterada de %.2f ºC para: %.2f ºC\n", temp_min, temp_min_temporario);
+            return config_temp();
+            break;
+        case 3:
+            incremento_temporario = valor;
+            printf("Incremento temporário alterado de %.2f ºC para: %.2f ºC\n", incremento, incremento_temporario);
+            return config_temp();
+            break;
+        }
+    } else {
+        printf("Valor inválido! Digite um número.\n");
+        return alterar_valor(alterar);
+    }
+}
 
 // Função para resetar as configurações para os valores de fábrica
 void reset_config_fabrica()
@@ -42,38 +92,39 @@ bool verificar_config_fabrica()
 
 int config_temp()
 {
-    printf("\033[H\033[J"); // Limpa o serial
+    int escolha;
+    // printf("\033[H\033[J"); // Limpa o serial
     printf("1 - Alterar valor da temperatura máxima\n");
     printf("2 - Alterar valor da temperatura mínima\n");
     printf("3 - Alterar valor do incremento\n");
     printf("4 - Salvar configurações e sair\n");
     printf("5 - Sair sem salvar\n");
 
-    char entrada = getchar();    // Captura um único caractere
-    int escolha = entrada - '0'; // Converte de char para inteiro
+    scanf("%d", &escolha); // Captura um número inteiro
+
+    printf("Escolha: %d\n", escolha);
 
     if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
     {
         printf("Opção inválida!\n\n");
-        return config(); // Chama a função novamente
+        return config_temp(); // Chama a função novamente
     }
-
     switch (escolha)
     {
     case 1:
-        config_temp();
+        alterar_valor(escolha);
         break;
     case 2:
-        config_temp();
+        alterar_valor(escolha);
         break;
     case 3:
-        config_temp();
+        alterar_valor(escolha);
         break;
     case 4:
-        config_temp();
+        save_and_quit();
         break;
     case 5:
-        config();
+        no_save();
         break;
     }
 }
@@ -87,7 +138,8 @@ int config()
 {
     if (stdio_usb_connected())
     {
-        printf("\033[H\033[J"); // Limpa o serial
+        int escolha;
+        // printf("\033[H\033[J"); // Limpa o serial
         printf("------------------------------------------Configurações-----------------------------------------\n");
         printf("1 - Configurações do sensor de temperatura\n");
         printf("2 - Configurações de relatório\n");
@@ -96,8 +148,9 @@ int config()
         printf("5 - Voltar ao menu\n");
         printf("Escolha uma opção: ");
 
-        char entrada = getchar();    // Captura um único caractere
-        int escolha = entrada - '0'; // Converte de char para inteiro
+        scanf("%d", &escolha); // Captura um número inteiro
+
+        printf("Escolha: %d\n", escolha);
 
         if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
         {

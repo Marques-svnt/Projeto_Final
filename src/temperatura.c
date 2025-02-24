@@ -2,7 +2,7 @@
 #include "pico/stdlib.h"
 #include <string.h>
 #include "hardware/adc.h"
-#include "report.h"
+#include "relatorio.h"
 #include "hardware/pwm.h"
 #include "defines.h"
 #include "converts.h"

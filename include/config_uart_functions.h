@@ -32,6 +32,8 @@ void menu_off();
 // Variáveis reçacioanadas ao relatório
 extern volatile int tempo_config;
 extern volatile int unidade_relatorio;
+extern volatile int unidade_relatorio_temporario;
+extern volatile int tempo_config_temporario;
 extern bool gerar_relatorio; // 1 para ligado e 0 para desligado
 
 //Declaração das funções de configuração do relatório via UART

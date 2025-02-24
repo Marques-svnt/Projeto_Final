@@ -65,14 +65,14 @@ void registrar_temperatura(float temp, float temp_min, float temp_max, uint16_t 
             if (!estava_critica)
             {
                 // Caso a temperatura entre em uma zona crítica
-                printf("[%s] Temperatura crítica! Temperatura: %.2f%s, ultrapassou os limites. Variação: %.2f%s\n",
+                printf("[%s] Temperatura crítica! Temperatura: %.2f%s, ultrapassou os limites. Variação: %.2f%s\n\n",
                        horario, temperatura_convertida, unidade, variacao, unidade);
                 estava_critica = true;
             }
             else
             {
                 // Temperatura permanece fora dos limites
-                printf("[%s] Temperatura ainda fora do limite. Temperatura: %.2f%s. Variação: %.2f%s\n",
+                printf("[%s] Temperatura ainda fora do limite. Temperatura: %.2f%s. Variação: %.2f%s\n\n",
                        horario, temperatura_convertida, unidade, variacao, unidade);
             }
         }
@@ -81,14 +81,14 @@ void registrar_temperatura(float temp, float temp_min, float temp_max, uint16_t 
             if (estava_critica)
             {
                 // Caso a temperatura tenha voltado ao normal após estar fora dos limites
-                printf("[%s] Temperatura estava crítica em %.2f%s, porém estabilizou para %.2f%s\n",
+                printf("[%s] Temperatura estava crítica em %.2f%s, porém estabilizou para %.2f%s\n\n",
                        horario, temperatura_anterior, unidade, temperatura_convertida, unidade);
                 estava_critica = false;
             }
             else
             {
                 // Temperatura dentro dos limites
-                printf("[%s] Temperatura normal: %.2f%s. Variação: %.2f%s\n",
+                printf("[%s] Temperatura normal: %.2f%s. Variação: %.2f%s\n\n",
                        horario, temperatura_convertida, unidade, variacao, unidade);
             }
         }

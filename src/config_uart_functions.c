@@ -58,9 +58,9 @@ void save_and_quit_temp()
 
 void no_save_temp()
 {
-    temp_min_temporario = temp_min_fabrica;
-    temp_max_temporario = temp_max_fabrica;
-    incremento_temporario = incremento_fabrica;
+    temp_min_temporario = temp_min;
+    temp_max_temporario = temp_max;
+    incremento_temporario = incremento;
     config();
 }
 
@@ -105,6 +105,7 @@ void reset_config_fabrica()
     incremento = incremento_fabrica;
     gerar_relatorio = 1;
     unidade_relatorio = unidade_relatorio_fabrica;
+    tempo_config = tempo_config_fabrica;
     printf("Configurações de fábrica restauradas.\n");
 }
 
@@ -197,7 +198,7 @@ void save_and_quit_relatorio()
 void no_save_relatorio()
 {
     gerar_relatorio = 1;
-    tempo_config_temporario = tempo_config_fabrica;
-    unidade_relatorio_temporario = unidade_relatorio_fabrica;
+    tempo_config_temporario = tempo_config;
+    unidade_relatorio_temporario = unidade_relatorio;
     config();
 }

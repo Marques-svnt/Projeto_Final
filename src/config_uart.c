@@ -22,14 +22,24 @@ int config_relatorio()
     {
         printf(" Desligado)\n");
     }
-    printf("2 - Mudar unidade de medida\n");
-    printf("3 - Mudar intervalo dos dados\n");
+    printf("2 - Mudar unidade de medida (Atualmente:");
+    switch (unidade_relatorio_temporario)
+    {
+    case 1:
+        printf(" Celsius)\n");
+        break;
+    case 2:
+        printf(" Kelvin)\n");
+        break;
+    case 3:
+        printf(" Fahrenheit)\n");
+        break;
+    }
+    printf("3 - Mudar intervalo dos dados (Atualmente: %is)\n", (tempo_config_temporario / 1000));
     printf("4 - Salvar configurações e sair\n");
     printf("5 - Sair sem salvar\n");
 
     scanf("%d", &escolha); // Captura um número inteiro
-
-    printf("Escolha: %d\n", escolha);
 
     if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
     {
@@ -59,15 +69,13 @@ int config_relatorio()
 int config_temp()
 {
     int escolha;
-    printf("1 - Alterar valor da temperatura máxima\n");
-    printf("2 - Alterar valor da temperatura mínima\n");
-    printf("3 - Alterar valor do incremento\n");
+    printf("1 - Alterar valor da temperatura máxima (Atualmente: %.2fºC)\n", temp_max_temporario);
+    printf("2 - Alterar valor da temperatura mínima (Atualmente: %.2fºC)\n", temp_min_temporario);
+    printf("3 - Alterar valor do incremento (Atualmente: %.2fºC)\n", incremento_temporario);
     printf("4 - Salvar configurações e sair\n");
     printf("5 - Sair sem salvar\n");
 
     scanf("%d", &escolha); // Captura um número inteiro
-
-    printf("Escolha: %d\n", escolha);
 
     if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
     {
@@ -99,7 +107,7 @@ int config()
     if (stdio_usb_connected())
     {
         int escolha;
-        printf("------------------------------------------Configurações-----------------------------------------\n");
+        printf("\n\n===================================================================Configurações===================================================================\n\n");
         printf("1 - Configurações do sensor de temperatura\n");
         printf("2 - Configurações de relatório\n");
         printf("3 - Restaurar configurações de fábrica\n");
@@ -108,8 +116,6 @@ int config()
         printf("Escolha uma opção: ");
 
         scanf("%d", &escolha); // Captura um número inteiro
-
-        printf("Escolha: %d\n", escolha);
 
         if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
         {
@@ -171,7 +177,7 @@ int config()
     {
         menu_off();
     }
-
+    printf("\n\n==============================================================Fechando Configurações==============================================================\n\n");
     menu_init(); // configura novamente os botões do menu
     return 0;
 }

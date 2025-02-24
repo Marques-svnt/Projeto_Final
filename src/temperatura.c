@@ -25,6 +25,7 @@ volatile float temp;
 
 extern volatile bool alarme_ativo;
 
+uint16_t vry_value;
 char temp_str[10]; // Buffer para armazenar a string
 
 void controlar_leds(float temperatura, float temp_min, float temp_max)
@@ -67,7 +68,7 @@ void simular_adc_temp()
     // Configura o input do ADC
     adc_select_input(1);
     sleep_us(5); // Pequeno delay para estabilidade
-    uint16_t vry_value = adc_read();
+    vry_value = adc_read();
 
     temp_crit_max = temp_max + incremento;
     temp_crit_min = temp_min - incremento;
@@ -171,7 +172,7 @@ int temperatura()
 
     while (exec == 1)
     {
-        registrar_temperatura(temp);
+        registrar_temperatura(temp, temp_min, temp_max, vry_value);
         simular_adc_temp();
         sleep_ms(50);
     }

@@ -10,6 +10,52 @@
 #include "pico/bootrom.h"
 #include "config_uart_functions.h"
 
+int config_relatorio()
+{
+    int escolha;
+    printf("1 - Ligar/Desligar geração de relatórios (Atualmente:");
+    if (gerar_relatorio)
+    {
+        printf(" Ligado)\n");
+    }
+    else
+    {
+        printf(" Desligado)\n");
+    }
+    printf("2 - Mudar unidade de medida\n");
+    printf("3 - Mudar intervalo dos dados\n");
+    printf("4 - Salvar configurações e sair\n");
+    printf("5 - Sair sem salvar\n");
+
+    scanf("%d", &escolha); // Captura um número inteiro
+
+    printf("Escolha: %d\n", escolha);
+
+    if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
+    {
+        printf("Opção inválida!\n\n");
+        return config_temp(); // Chama a função novamente
+    }
+    switch (escolha)
+    {
+    case 1:
+        mudar_gerar_relatorio();
+        break;
+    case 2:
+        mudar_unidade_relatorio();
+        break;
+    case 3:
+        mudar_intervalo_relatório();
+        break;
+    case 4:
+        save_and_quit_relatorio();
+        break;
+    case 5:
+        no_save_relatorio();
+        break;
+    }
+}
+
 int config_temp()
 {
     int escolha;
@@ -40,10 +86,10 @@ int config_temp()
         alterar_valor(escolha);
         break;
     case 4:
-        save_and_quit();
+        save_and_quit_temp();
         break;
     case 5:
-        no_save();
+        no_save_temp();
         break;
     }
 }
@@ -77,7 +123,7 @@ int config()
             config_temp();
             break;
         case 2:
-            // Código das configurações gerais
+            config_relatorio();
             break;
         case 3:
             // Verifica se as configurações já estão nos valores de fábrica

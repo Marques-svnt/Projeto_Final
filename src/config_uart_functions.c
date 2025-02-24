@@ -31,10 +31,14 @@ volatile float temp_crit_min;
 volatile float temp_crit_max;
 
 volatile int unidade_relatorio = unidade_relatorio_fabrica;
-
 volatile int tempo_config = tempo_config_fabrica;
 
-void save_and_quit()
+volatile int unidade_relatorio_temporario = unidade_relatorio_fabrica;
+volatile int tempo_config_temporario = tempo_config_fabrica;
+
+bool gerar_relatorio = 1;
+
+void save_and_quit_temp()
 {
     if (!(temp_min_temporario >= temp_max_temporario))
     {
@@ -43,14 +47,16 @@ void save_and_quit()
         incremento = incremento_temporario;
 
         config();
-    } else {
+    }
+    else
+    {
         printf("Valores estão apresentando erros, redefinindo para os valores de fábrica...\n");
         reset_config_fabrica();
         config_temp();
     }
 }
 
-void no_save()
+void no_save_temp()
 {
     temp_min_temporario = temp_min_fabrica;
     temp_max_temporario = temp_max_fabrica;
@@ -97,6 +103,8 @@ void reset_config_fabrica()
     temp_min = temp_min_fabrica;
     temp_max = temp_max_fabrica;
     incremento = incremento_fabrica;
+    gerar_relatorio = 1;
+    unidade_relatorio = unidade_relatorio_fabrica;
     printf("Configurações de fábrica restauradas.\n");
 }
 
@@ -113,7 +121,8 @@ bool verificar_config_fabrica()
     }
 }
 
-void menu_off(){
+void menu_off()
+{
     pwm_set_gpio_level(VERMELHO, 2048);
     limpar();
     display("Ative o Serial", 8, 10);
@@ -124,3 +133,71 @@ void menu_off(){
     pwm_set_gpio_level(VERMELHO, 0);
 }
 
+void mudar_gerar_relatorio()
+{
+    {
+        gerar_relatorio = !gerar_relatorio;
+        config_relatorio();
+    }
+}
+
+int mudar_unidade_relatorio()
+{
+    int escolha;
+    printf("1 - Celsius\n");
+    printf("2 - Kelvin\n");
+    printf("3 - Fahrenheit\n");
+    scanf("%d", &escolha);
+    if (!(escolha >= 1 && escolha <= 3)) // Verifica entrada inválida
+    {
+        printf("Opção inválida!\n\n");
+        return mudar_unidade_relatorio(); // Chama a função novamente
+    }
+    switch (escolha)
+    {
+    case 1:
+        unidade_relatorio_temporario = 1;
+        config_relatorio();
+        break;
+    case 2:
+        unidade_relatorio_temporario = 2;
+        config_relatorio();
+        break;
+    case 3:
+        unidade_relatorio_temporario = 3;
+        config_relatorio();
+        break;
+    }
+}
+
+int mudar_intervalo_relatório()
+{
+    int valor;
+    printf("Digite o novo valor para o intervalo dos dados em segundos: ");
+    if (scanf("%i", &valor) == 1)
+    { // Verifica se a leitura de um float foi bem-sucedida
+        printf("\nValor alterado de %i segundos para %i segundos\n", (tempo_config_temporario / 1000), valor);
+        tempo_config_temporario = valor * 1000;
+        return config_relatorio();
+    }
+    else
+    {
+        printf("Valor inválido! Digite um número.\n");
+        return mudar_intervalo_relatório();
+    }
+}
+
+void save_and_quit_relatorio()
+{
+    tempo_config = tempo_config_temporario;
+    unidade_relatorio = unidade_relatorio_temporario;
+    config();
+}
+
+void no_save_relatorio()
+{
+    gerar_relatorio = 1;
+    tempo_config_temporario = tempo_config_fabrica;
+    unidade_relatorio_temporario = unidade_relatorio_fabrica;
+    config();
+}

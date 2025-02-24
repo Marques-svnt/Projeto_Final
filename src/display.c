@@ -40,6 +40,7 @@ void display(const char *texto, int x, int y)
 void limpar()
 {
     ssd1306_fill(&ssd, false);
+    ssd1306_send_data(&ssd);
 }
 
 void display_set_temp(const char *texto, int x, int y)

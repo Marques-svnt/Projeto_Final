@@ -2,6 +2,7 @@
 #include "pico/stdlib.h"
 #include <string.h>
 #include "hardware/adc.h"
+#include "relatorio.h"
 #include "hardware/pwm.h"
 #include "defines.h"
 #include "converts.h"
@@ -24,6 +25,9 @@ volatile float temp;
 
 extern volatile bool alarme_ativo;
 
+bool titulo = 1;
+
+uint16_t vry_value;
 char temp_str[10]; // Buffer para armazenar a string
 
 void controlar_leds(float temperatura, float temp_min, float temp_max)
@@ -66,18 +70,18 @@ void simular_adc_temp()
     // Configura o input do ADC
     adc_select_input(1);
     sleep_us(5); // Pequeno delay para estabilidade
-    uint16_t vry_value = adc_read();
+    vry_value = adc_read();
 
     temp_crit_max = temp_max + incremento;
     temp_crit_min = temp_min - incremento;
-    
-    //printf("Teste: %.2f %.2f %.2f %.2f\n\n",temp_crit_min,temp_crit_max, temp_min, temp_max); Debug
+
+    // printf("Teste: %.2f %.2f %.2f %.2f\n\n",temp_crit_min,temp_crit_max, temp_min, temp_max); Debug
 
     // Converter dados digitais do ADC para os parâmetros de temperatura
     switch (unid)
     {
-    case 0:                              // Celsius
-        set_one_led(10, 0, 0, 20);       // Exibe a unidade de medida na matriz
+    case 0:                        // Celsius
+        set_one_led(10, 0, 0, 20); // Exibe a unidade de medida na matriz
 
         temp = converter_adc_para_temp(vry_value); // Converte o valor em ADC para a temperatura
 
@@ -88,7 +92,7 @@ void simular_adc_temp()
         display_set_temp("Celsius:", 36, 10);
         break;
 
-    case 1:                              // Kelvin
+    case 1: // Kelvin
         set_one_led(11, 0, 0, 20);
 
         temp = celsius_para_kelvin(converter_adc_para_temp(vry_value));
@@ -100,7 +104,7 @@ void simular_adc_temp()
         display_set_temp("Kelvin:", 40, 10);
         break;
 
-    case 2:                              // Fahrenheit
+    case 2: // Fahrenheit
         set_one_led(12, 0, 0, 20);
 
         temp = celsius_para_fahrenheit(converter_adc_para_temp(vry_value));
@@ -140,21 +144,21 @@ void gpio_irq_handler_temp(uint gpio, uint32_t events)
     {
         last_time_A = current_time;
         // Altera o valor da unidade ao apertar o botao
-        unid = (unid + 1) % 3; // Alterna entre 0, 1 e 2
+        unid = (unid + 1) % 3;                    // Alterna entre 0, 1 e 2
         display_set_temp("             ", 0, 10); // Garante que o display esteja limpo na unidade
-        limpar();              // Limpa apenas quando necessário
+        limpar();                                 // Limpa apenas quando necessário
     }
     // Volta para o menu
     else if (gpio == BUTTON_B && debounce(&last_time_B, 300000))
     {
         last_time_B = current_time;
         exec = 0;
-        alarme_ativo = false;            // flag que desliga o som do buzzer
+        alarme_ativo = false; // flag que desliga o som do buzzer
 
         uint slice_num = pwm_gpio_to_slice_num(BUZZER);
         uint channel = pwm_gpio_to_channel(BUZZER);
         // Desabilitar PWM
-        pwm_set_enabled(slice_num, false);               // garante que o buzzer desliga
+        pwm_set_enabled(slice_num, false); // garante que o buzzer desliga
 
         pwm_set_gpio_level(VERMELHO, 0); // Garante que os leds não ficarão acessos
         pwm_set_gpio_level(VERDE, 0);
@@ -170,10 +174,17 @@ int temperatura()
 
     while (exec == 1)
     {
+        if (gerar_relatorio)
+        {
+            registrar_temperatura(temp, temp_min, temp_max, vry_value);
+        }
         simular_adc_temp();
         sleep_ms(50);
     }
-
+    if(!titulo){
+        printf("================================================================================================================================================\n\n");
+        titulo = !titulo;
+    }
     menu_init(); // configura novamente os botões do menu
     exec = 1;    // permite que volte ao código após sair dele uma vez
     return 0;

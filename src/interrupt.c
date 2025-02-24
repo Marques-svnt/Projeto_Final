@@ -52,7 +52,7 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     uint32_t current_time = to_us_since_boot(get_absolute_time());
 
     // Incrementação do número da matriz de leds
-    if (gpio == BUTTON_A && debounce(&last_time_A, 200000))
+    if (gpio == BUTTON_A && debounce(&last_time_A, 300000))
     {
         last_time_A = current_time;
         state = choose; // Atribui ao estado de maquina o valor atual do menu ao pressionar o joystick
@@ -60,7 +60,7 @@ void gpio_irq_handler(uint gpio, uint32_t events)
         limpar(); // Limpa o display
     }
     // Decrementação do número da matriz de leds
-    else if (gpio == BUTTON_B && debounce(&last_time_B, 200000))
+    else if (gpio == BUTTON_B && debounce(&last_time_B, 300000))
     {
         last_time_B = current_time;
 

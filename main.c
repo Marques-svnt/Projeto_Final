@@ -42,12 +42,10 @@ int main()
         case 1:
             state = 0; // Limpa o buffer
             temperatura();
-            printf("Temp\n");
             break;
         case 2:
             state = 0; // Limpa o buffer
             config();
-            printf("Config\n");
             break;
         }
         sleep_ms(50);

@@ -23,9 +23,11 @@ extern volatile float temp_crit_max;
 
 // Declaração das funções de configuração gerais
 void show_config();
-void menu_off();
+void usb_off();
 void reset_config_fabrica();
 bool verificar_config_fabrica();
+int ler_inteiro_seguro();
+float ler_float_seguro();
 
 //Declaração das funções de configuração da temperatura via UART
 void save_and_quit_temp();
@@ -42,7 +44,7 @@ extern bool gerar_relatorio; // 1 para ligado e 0 para desligado
 //Declaração das funções de configuração do relatório via UART
 void mudar_gerar_relatorio();
 int mudar_unidade_relatorio();
-int mudar_intervalo_relatório();
+int mudar_intervalo_relatorio();
 void no_save_relatorio();
 void save_and_quit_relatorio();
 

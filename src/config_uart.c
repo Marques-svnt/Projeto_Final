@@ -13,39 +13,40 @@
 int config_relatorio()
 {
     int escolha;
-    printf("1 - Ligar/Desligar geração de relatórios (Atualmente:");
-    if (gerar_relatorio)
+    while (1)
     {
-        printf(" Ligado)\n");
-    }
-    else
-    {
-        printf(" Desligado)\n");
-    }
-    printf("2 - Mudar unidade de medida (Atualmente:");
-    switch (unidade_relatorio_temporario)
-    {
-    case 1:
-        printf(" Celsius)\n");
-        break;
-    case 2:
-        printf(" Kelvin)\n");
-        break;
-    case 3:
-        printf(" Fahrenheit)\n");
-        break;
-    }
-    printf("3 - Mudar intervalo dos dados (Atualmente: %is)\n", (tempo_config_temporario / 1000));
-    printf("4 - Salvar configurações e sair\n");
-    printf("5 - Sair sem salvar\n");
+        printf("\n1 - Ligar/Desligar geração de relatórios (Atualmente:");
+        printf(gerar_relatorio ? " Ligado)\n" : " Desligado)\n");
 
-    scanf("%d", &escolha); // Captura um número inteiro
+        printf("2 - Mudar unidade de medida (Atualmente:");
+        switch (unidade_relatorio_temporario)
+        {
+        case 1:
+            printf(" Celsius)\n");
+            break;
+        case 2:
+            printf(" Kelvin)\n");
+            break;
+        case 3:
+            printf(" Fahrenheit)\n");
+            break;
+        }
 
-    if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
-    {
-        printf("Opção inválida!\n\n");
-        return config_temp(); // Chama a função novamente
+        printf("3 - Mudar intervalo dos dados (Atualmente: %is)\n", (tempo_config_temporario / 1000));
+        printf("4 - Salvar configurações e sair\n");
+        printf("5 - Sair sem salvar\n");
+
+        escolha = ler_inteiro_seguro(); // Uso da função segura
+
+        if (escolha >= 1 && escolha <= 5)
+        {
+            break;
+        }
+
+        printf("Opção inválida! Tente novamente.\n\n");
     }
+
+    // Executa a ação com base na escolha do usuário
     switch (escolha)
     {
     case 1:
@@ -55,7 +56,7 @@ int config_relatorio()
         mudar_unidade_relatorio();
         break;
     case 3:
-        mudar_intervalo_relatório();
+        mudar_intervalo_relatorio();
         break;
     case 4:
         save_and_quit_relatorio();
@@ -64,32 +65,36 @@ int config_relatorio()
         no_save_relatorio();
         break;
     }
+
+    return 0;
 }
 
 int config_temp()
 {
     int escolha;
-    printf("1 - Alterar valor da temperatura máxima (Atualmente: %.2fºC)\n", temp_max_temporario);
-    printf("2 - Alterar valor da temperatura mínima (Atualmente: %.2fºC)\n", temp_min_temporario);
-    printf("3 - Alterar valor do incremento (Atualmente: %.2fºC)\n", incremento_temporario);
-    printf("4 - Salvar configurações e sair\n");
-    printf("5 - Sair sem salvar\n");
-
-    scanf("%d", &escolha); // Captura um número inteiro
-
-    if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
+    while (1)
     {
-        printf("Opção inválida!\n\n");
-        return config_temp(); // Chama a função novamente
+        printf("\n1 - Alterar valor da temperatura máxima (Atualmente: %.2fºC)\n", temp_max_temporario);
+        printf("2 - Alterar valor da temperatura mínima (Atualmente: %.2fºC)\n", temp_min_temporario);
+        printf("3 - Alterar valor do incremento (Atualmente: %.2fºC)\n", incremento_temporario);
+        printf("4 - Salvar configurações e sair\n");
+        printf("5 - Sair sem salvar\n");
+
+        escolha = ler_inteiro_seguro(); // Uso da função segura
+
+        if (escolha >= 1 && escolha <= 5)
+        {
+            break;
+        }
+
+        printf("Opção inválida! Tente novamente.\n\n");
     }
+
+    // Executa a ação com base na escolha do usuário
     switch (escolha)
     {
     case 1:
-        alterar_valor(escolha);
-        break;
     case 2:
-        alterar_valor(escolha);
-        break;
     case 3:
         alterar_valor(escolha);
         break;
@@ -100,6 +105,8 @@ int config_temp()
         no_save_temp();
         break;
     }
+
+    return 0;
 }
 
 int config()
@@ -110,23 +117,27 @@ int config()
         display("o projeto", 28, 35);
 
         int escolha;
-        printf("\n\n===================================================================Configurações===================================================================\n\n");
-        printf("1 - Configurações do sensor de temperatura\n");
-        printf("2 - Configurações de relatório\n");
-        printf("3 - Restaurar configurações de fábrica\n");
-        printf("4 - Mostrar configurações atuais do projeto\n");
-        printf("5 - Entrar em bootsel\n");
-        printf("6 - Voltar ao menu\n");
-        printf("Escolha uma opção: ");
-
-        scanf("%d", &escolha); // Captura um número inteiro
-
-        if (!(escolha >= 1 && escolha <= 6)) // Verifica entrada inválida
+        while (1)
         {
-            printf("Opção inválida!\n\n");
-            return config(); // Chama a função novamente
+            printf("\n\n===================================================================Configurações===================================================================\n\n");
+            printf("1 - Configurações do sensor de temperatura\n");
+            printf("2 - Configurações de relatório\n");
+            printf("3 - Restaurar configurações de fábrica\n");
+            printf("4 - Mostrar configurações atuais do projeto\n");
+            printf("5 - Entrar em bootsel\n");
+            printf("6 - Voltar ao menu\n");
+
+            escolha = ler_inteiro_seguro(); // Uso da função segura
+
+            if (escolha >= 1 && escolha <= 6)
+            {
+                break;
+            }
+
+            printf("Opção inválida! Tente novamente.\n\n");
         }
 
+        // Executa a ação com base na escolha do usuário
         switch (escolha)
         {
         case 1:
@@ -136,33 +147,26 @@ int config()
             config_relatorio();
             break;
         case 3:
-            // Verifica se as configurações já estão nos valores de fábrica
             if (verificar_config_fabrica())
             {
                 printf("As configurações já estão nos valores de fábrica:\n");
-                printf("Temperatura mínima para exibir alerta: %.2fºC\n", temp_min);
-                printf("Temperatura máxima para exibir alerta: %.2fºC\n", temp_max);
-                printf("Valor do incremento em relação às temperaturas máxima e mínima que serão simuladas: %.2fºC\n", incremento);
+                printf("Temperatura mínima para exibir alerta: %.2fºC\n", temp_min_fabrica);
+                printf("Temperatura máxima para exibir alerta: %.2fºC\n", temp_max_fabrica);
+                printf("Valor do incremento em relação às temperaturas máxima e mínima que serão simuladas: %.2fºC\n", incremento_fabrica);
+                printf("Gerando Relatório\n");
+                printf("Unidade de medida: Celsius\n");
+                printf("Tempo entre leitura do relatório: %i segundos\n",(tempo_config_fabrica/1000));
 
-                printf("\nEnvie qualquer caractere para continuar...\n");
-
-                // Espera o usuário pressionar Enter
-                getchar(); // Captura o Enter
-
-                // Retorna as configurações de fábrica (caso precise de algo específico, adicione aqui)
                 printf("Voltando às configurações...\n");
-
-                config();
+                sleep_ms(2000);
             }
             else
             {
-                // Se não estiver, faz o reset
                 printf("As configurações não estão nos valores de fábrica.\nReconfigurando...\n");
                 sleep_ms(2000);
                 reset_config_fabrica();
-                config();
             }
-            break;
+            return config();
         case 4:
             show_config();
             break;
@@ -172,9 +176,7 @@ int config()
             display("BOOTSEL", 36, 32);
             sleep_ms(2000);
             limpar();
-
-            reset_usb_boot(0, 0); // Entra em modo bootsell
-
+            reset_usb_boot(0, 0); // Entra em modo bootsel
             break;
         case 6:
             break;
@@ -182,8 +184,9 @@ int config()
     }
     else
     {
-        menu_off();
+        usb_off();
     }
+
     printf("\n\n==============================================================Fechando Configurações==============================================================\n\n");
     menu_init(); // configura novamente os botões do menu
     return 0;

@@ -106,6 +106,9 @@ int config()
 {
     if (stdio_usb_connected())
     {
+        display("Configurando", 16, 25);
+        display("o projeto", 28, 35);
+
         int escolha;
         printf("\n\n===================================================================Configurações===================================================================\n\n");
         printf("1 - Configurações do sensor de temperatura\n");
@@ -164,11 +167,11 @@ int config()
             show_config();
             break;
         case 5:
+            limpar();
             display("Entrando em", 20, 22);
             display("BOOTSEL", 36, 32);
-            sleep_ms(1000);
-            display("           ", 20, 22); // Limpa o display
-            display("       ", 36, 32);
+            sleep_ms(2000);
+            limpar();
 
             reset_usb_boot(0, 0); // Entra em modo bootsell
 

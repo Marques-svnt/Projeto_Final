@@ -25,6 +25,8 @@ volatile float temp;
 
 extern volatile bool alarme_ativo;
 
+bool titulo = 1;
+
 uint16_t vry_value;
 char temp_str[10]; // Buffer para armazenar a string
 
@@ -179,7 +181,10 @@ int temperatura()
         simular_adc_temp();
         sleep_ms(50);
     }
-
+    if(!titulo){
+        printf("================================================================================================================================================\n\n");
+        titulo = !titulo;
+    }
     menu_init(); // configura novamente os botões do menu
     exec = 1;    // permite que volte ao código após sair dele uma vez
     return 0;

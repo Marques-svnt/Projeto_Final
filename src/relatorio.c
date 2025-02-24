@@ -9,6 +9,8 @@ float temperatura_anterior = 0.0;
 bool estava_critica = false;
 uint64_t last_time = 0; // Para controle de tempo
 
+extern bool titulo;
+
 extern volatile int unidade_relatorio;
 
 // Função para obter o horário formatado
@@ -23,6 +25,10 @@ void obter_horario_formatado(char *buffer, size_t tamanho)
 // Função para registrar a temperatura com a passagem de tempo real
 void registrar_temperatura(float temp, float temp_min, float temp_max, uint16_t vry)
 {
+    if(titulo){
+        printf("\n\n===================================================================Relatório===================================================================\n\n");
+        titulo = !titulo;
+    }
     uint64_t now = to_ms_since_boot(get_absolute_time()); // Tempo atual em milissegundos
     uint64_t delay_ms = tempo_config;
 

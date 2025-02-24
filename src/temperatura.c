@@ -2,6 +2,7 @@
 #include "pico/stdlib.h"
 #include <string.h>
 #include "hardware/adc.h"
+#include "report.h"
 #include "hardware/pwm.h"
 #include "defines.h"
 #include "converts.h"
@@ -170,6 +171,7 @@ int temperatura()
 
     while (exec == 1)
     {
+        registrar_temperatura(temp);
         simular_adc_temp();
         sleep_ms(50);
     }

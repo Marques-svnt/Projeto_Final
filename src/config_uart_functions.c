@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 #include "display.h"
@@ -14,6 +15,8 @@
 const float temp_min_fabrica = 2.0;
 const float temp_max_fabrica = 8.0;
 const float incremento_fabrica = 5.0;
+const int tempo_config_fabrica = 1000;
+const int unidade_relatorio_fabrica = 1;
 
 // Váriaveis globais configuráveis do projeto
 volatile float temp_min = temp_min_fabrica;
@@ -26,6 +29,10 @@ volatile float incremento_temporario = incremento_fabrica;
 
 volatile float temp_crit_min;
 volatile float temp_crit_max;
+
+volatile int unidade_relatorio = unidade_relatorio_fabrica;
+
+volatile int tempo_config = tempo_config_fabrica;
 
 void save_and_quit()
 {

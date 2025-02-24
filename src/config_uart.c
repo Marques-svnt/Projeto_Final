@@ -13,7 +13,6 @@
 int config_temp()
 {
     int escolha;
-    // printf("\033[H\033[J"); // Limpa o serial
     printf("1 - Alterar valor da temperatura máxima\n");
     printf("2 - Alterar valor da temperatura mínima\n");
     printf("3 - Alterar valor do incremento\n");
@@ -54,7 +53,6 @@ int config()
     if (stdio_usb_connected())
     {
         int escolha;
-        // printf("\033[H\033[J"); // Limpa o serial
         printf("------------------------------------------Configurações-----------------------------------------\n");
         printf("1 - Configurações do sensor de temperatura\n");
         printf("2 - Configurações de relatório\n");

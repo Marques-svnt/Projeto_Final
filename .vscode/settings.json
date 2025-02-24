@@ -38,6 +38,7 @@
     "raspberry-pi-pico.ninjaPath": "${HOME}/.pico-sdk/ninja/v1.12.1/ninja",
     "files.associations": {
         "display.h": "c",
-        "pwm.h": "c"
+        "pwm.h": "c",
+        "config_uart_functions.h": "c"
     }
 }

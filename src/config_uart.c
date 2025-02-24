@@ -111,13 +111,14 @@ int config()
         printf("1 - Configurações do sensor de temperatura\n");
         printf("2 - Configurações de relatório\n");
         printf("3 - Restaurar configurações de fábrica\n");
-        printf("4 - Entrar em bootsel\n");
-        printf("5 - Voltar ao menu\n");
+        printf("4 - Mostrar configurações atuais do projeto\n");
+        printf("5 - Entrar em bootsel\n");
+        printf("6 - Voltar ao menu\n");
         printf("Escolha uma opção: ");
 
         scanf("%d", &escolha); // Captura um número inteiro
 
-        if (!(escolha >= 1 && escolha <= 5)) // Verifica entrada inválida
+        if (!(escolha >= 1 && escolha <= 6)) // Verifica entrada inválida
         {
             printf("Opção inválida!\n\n");
             return config(); // Chama a função novamente
@@ -160,6 +161,9 @@ int config()
             }
             break;
         case 4:
+            show_config();
+            break;
+        case 5:
             display("Entrando em", 20, 22);
             display("BOOTSEL", 36, 32);
             sleep_ms(1000);
@@ -169,7 +173,7 @@ int config()
             reset_usb_boot(0, 0); // Entra em modo bootsell
 
             break;
-        case 5:
+        case 6:
             break;
         }
     }

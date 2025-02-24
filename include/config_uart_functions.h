@@ -21,13 +21,16 @@ extern volatile float incremento_temporario;
 extern volatile float temp_crit_min;
 extern volatile float temp_crit_max;
 
+// Declaração das funções de configuração gerais
+void show_config();
+void menu_off();
+void reset_config_fabrica();
+bool verificar_config_fabrica();
+
 //Declaração das funções de configuração da temperatura via UART
 void save_and_quit_temp();
 void no_save_temp();
 int alterar_valor(int alterar);
-void reset_config_fabrica();
-bool verificar_config_fabrica();
-void menu_off();
 
 // Variáveis reçacioanadas ao relatório
 extern volatile int tempo_config;

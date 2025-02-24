@@ -51,7 +51,8 @@ void save_and_quit_temp()
     else
     {
         printf("Valores estão apresentando erros, redefinindo para os valores de fábrica...\n");
-        reset_config_fabrica();
+        temp_min_temporario = temp_min_fabrica;
+        temp_max_temporario = temp_max_fabrica;
         config_temp();
     }
 }
@@ -200,5 +201,44 @@ void no_save_relatorio()
     gerar_relatorio = 1;
     tempo_config_temporario = tempo_config;
     unidade_relatorio_temporario = unidade_relatorio;
+    config();
+}
+
+void show_config()
+{
+    printf("Temperatura mínima atual: %.2f\n", temp_min);
+    printf("Temperatura máxima atual: %.2f\n", temp_max);
+    printf("Incremento da temperatura atual: %.2f\n", incremento);
+    printf("Gerar relatórios: ");
+    if (gerar_relatorio)
+    {
+        printf("Ligado\n");
+    }
+    else
+    {
+        printf("Desligado\n");
+    }
+    printf("Unidade de medida do relatório atual: ");
+    switch (unidade_relatorio)
+    {
+    case 1:
+        printf("Celsius\n");
+        break;
+    case 2:
+        printf("Kelvin\n");
+        break;
+    case 3:
+        printf("Fahrenheit\n");
+        break;
+    }
+    printf("Intervalo dos dados do relatório atual: %i\n", tempo_config);
+    printf("\nEnvie qualquer caractere para continuar...\n");
+
+    // Espera o usuário pressionar Enter
+    getchar(); // Captura o Enter
+
+    // Retorna as configurações de fábrica (caso precise de algo específico, adicione aqui)
+    printf("Voltando às configurações...\n");
+
     config();
 }

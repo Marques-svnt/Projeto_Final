@@ -40,6 +40,7 @@
         "display.h": "c",
         "pwm.h": "c",
         "config_uart_functions.h": "c",
-        "i2c.h": "c"
+        "i2c.h": "c",
+        "interrupt.h": "c"
     }
 }

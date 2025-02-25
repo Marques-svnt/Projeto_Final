@@ -1,18 +1,21 @@
+// Bibliotecas padrão em C
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
-#include "pico/stdlib.h"
-#include "hardware/pwm.h"
-#include "display.h"
-#include <stdlib.h>
-#include <string.h>
 #include <limits.h>
-#include "defines.h"
-#include "config_uart.h"
-#include "init.h"
+#include <stdbool.h>
+
+// Bibliotecas de hardware do Raspberry Pi Pico
+#include "hardware/pwm.h"
+#include "pico/stdlib.h"
 #include "pico/bootrom.h"
+
+// Headers do projeto
+#include "config_uart.h"
 #include "config_uart_functions.h"
+#include "defines.h"
+#include "display.h"
+#include "init.h"
 
 // Valores de fábrica
 const float temp_min_fabrica = 2.0;
@@ -41,6 +44,7 @@ volatile int tempo_config_temporario = tempo_config_fabrica;
 
 bool gerar_relatorio = 1;
 
+// Função para salvar as configurações temporárias e sair
 void save_and_quit_temp()
 {
     if (!(temp_min_temporario >= temp_max_temporario))
@@ -60,6 +64,7 @@ void save_and_quit_temp()
     }
 }
 
+// Função para não salvar as alterações temporárias e retornar
 void no_save_temp()
 {
     temp_min_temporario = temp_min;
@@ -68,6 +73,7 @@ void no_save_temp()
     config();
 }
 
+// Função para alterar valores temporários, baseado na escolha
 int alterar_valor(int alterar)
 {
     float valor;
@@ -123,6 +129,7 @@ bool verificar_config_fabrica()
     }
 }
 
+// Função para caso o monitor serial esteja desconectado
 void usb_off()
 {
     pwm_set_gpio_level(VERMELHO, 2048);
@@ -135,14 +142,14 @@ void usb_off()
     pwm_set_gpio_level(VERMELHO, 0);
 }
 
+// Função para alternar o estado de geração de relatório
 void mudar_gerar_relatorio()
 {
-    {
-        gerar_relatorio = !gerar_relatorio;
-        config_relatorio();
-    }
+    gerar_relatorio = !gerar_relatorio;
+    config_relatorio();
 }
 
+// Função para mudar a unidade de medida do relatório
 int mudar_unidade_relatorio()
 {
     int escolha;
@@ -177,6 +184,7 @@ int mudar_unidade_relatorio()
     config_relatorio();
 }
 
+// Função para mudar o intervalo de tempo do relatório
 int mudar_intervalo_relatorio()
 {
     int valor;
@@ -202,6 +210,7 @@ int mudar_intervalo_relatorio()
     return config_relatorio();
 }
 
+// Função para salvar as configurações de relatório e sair
 void save_and_quit_relatorio()
 {
     tempo_config = tempo_config_temporario;
@@ -209,6 +218,7 @@ void save_and_quit_relatorio()
     config();
 }
 
+// Função para não salvar as configurações temporárias do relatório
 void no_save_relatorio()
 {
     gerar_relatorio = 1;
@@ -217,6 +227,7 @@ void no_save_relatorio()
     config();
 }
 
+// Função para exibir as configurações atuais
 void show_config()
 {
     printf("Temperatura mínima atual: %.2f\n", temp_min);
@@ -253,6 +264,7 @@ void show_config()
 
     config();
 }
+
 // Código que garante que o número lido não cause overflow
 int ler_inteiro_seguro()
 {

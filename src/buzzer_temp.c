@@ -1,20 +1,26 @@
+// Bibliotecas padrão em C
 #include <stdio.h>
-#include "pico/stdlib.h"
+
+// Bibliotecas de hardware do Raspberry Pi Pico
 #include "hardware/pwm.h"
-#include "display.h"
 #include "hardware/timer.h"
-#include "temperatura.h"
+#include "pico/stdlib.h"
+
+// Headers do projeto
 #include "defines.h"
+#include "display.h"
+#include "temperatura.h"
 
+// Definições de constantes
 #define INTERVALO_ALARME 1 // Tempo entre mudanças de frequência (ms)
-#define FREQ_MIN 310
-#define FREQ_MAX 330
+#define FREQ_MIN 310       // Frequência mínima para o buzzer
+#define FREQ_MAX 330       // Frequência máxima para o buzzer
 
-uint volume = 0; // Volume global (padrão: 50%)
+// Variáveis globais
+volatile bool alarme_ativo = false; // Flag que indica se o alarme está ativo
+volatile uint freq_atual = FREQ_MIN;  // Frequência atual do buzzer (inicialmente definida como FREQ_MIN)
+struct repeating_timer timer_alarme;  // Estrutura para o timer que controla a alternância da frequência
 
-volatile bool alarme_ativo = false;
-volatile uint freq_atual = FREQ_MIN;
-struct repeating_timer timer_alarme;
 
 // Inicializa o buzzer
 void buzzer_init()
@@ -36,11 +42,7 @@ void buzz(uint freq)
 
     pwm_set_clkdiv(slice_num, divider);
     pwm_set_wrap(slice_num, top - 1);
-    pwm_set_chan_level(slice_num, channel, top / 2);
-
-    // Aplica o volume ao duty cycle
-    uint32_t duty_cycle = (top / 2) * volume / 100;
-    pwm_set_chan_level(slice_num, channel, duty_cycle);
+    pwm_set_chan_level(slice_num, channel, top / 2); // Duty cycle 50% (volume máximo)
 
     pwm_set_enabled(slice_num, true);
 }

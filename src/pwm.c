@@ -1,9 +1,15 @@
+// Bibliotecas padrão em C
 #include <stdio.h>
+
+// Bibliotecas de hardware do Raspberry Pi Pico
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
 #include "hardware/pwm.h"
+
+// Headers do projeto
 #include "defines.h"
 
+// Inicializa o PWM
 uint pwm_init_gpio(uint gpio, uint wrap)
 {
     gpio_set_function(gpio, GPIO_FUNC_PWM);
@@ -15,6 +21,7 @@ uint pwm_init_gpio(uint gpio, uint wrap)
     return slice_num;
 }
 
+// Inicializa o slice e configura para cada led
 void pwm_slice_init()
 {
     uint pwm_wrap = 4096;

@@ -1,5 +1,10 @@
+// Bibliotecas padrão em C
 #include <stdio.h>
+
+// Bibliotecas de hardware do Raspberry Pi Pico
 #include "pico/stdlib.h"
+
+// Headers do projeto
 #include "defines.h"
 #include "display.h"
 #include "pio.h"
@@ -12,10 +17,11 @@ uint8_t led_b = 20; // Intensidade do azul
 // Variáveis globais
 static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento (em microssegundos)
 static volatile uint32_t last_time_B = 0;
-volatile int choose = 1;
+volatile int choose = 1; // Controla a escolha do menu, variando entre 1 e 2
 
-extern int state;
+extern int state;  // Variável global de controle de estado da máquina de estados
 
+// Função para exibir o menu baseado na escolha
 void display_menu()
 {
     switch (choose)
@@ -64,7 +70,7 @@ void gpio_irq_handler(uint gpio, uint32_t events)
     {
         last_time_B = current_time;
 
-        choose = (choose % 2) + 1; // Alterna entre 1 e 2
+        choose = (choose % 2) + 1; // Alterna entre 1 e 2, para alternar entre os menus
 
         set_one_led(choose, led_r, led_g, led_b);
         display_menu(choose);

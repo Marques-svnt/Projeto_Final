@@ -1,13 +1,16 @@
+// Bibliotecas padrão em C
 #include <stdlib.h>
-#include "pico/stdlib.h"
+
+// Bibliotecas de hardware do Raspberry Pi Pico
 #include "hardware/i2c.h"
-#include "ssd1306.h"
+#include "pico/stdlib.h"
+
+// Headers do projeto
 #include "defines.h"
+#include "ssd1306.h"
 
 bool cor = true;
 ssd1306_t ssd;
-
-extern int clean;
 
 void initI2C()
 {
@@ -37,12 +40,14 @@ void display(const char *texto, int x, int y)
     ssd1306_send_data(&ssd);                      // Atualiza o display
 }
 
+// Função que limpa o display
 void limpar()
 {
     ssd1306_fill(&ssd, false);
     ssd1306_send_data(&ssd);
 }
 
+// Função que recebe o texto e coordenadas para exibir no display a mensagem (configurado para a temperatura)
 void display_set_temp(const char *texto, int x, int y)
 {
     // Atualiza o conteúdo do display com animações

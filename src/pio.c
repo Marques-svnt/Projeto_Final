@@ -1,10 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+// Bibliotecas de hardware do Raspberry Pi Pico
 #include "pico/stdlib.h"
-#include "hardware/pio.h"
 #include "hardware/clocks.h"
-#include "ws2812.pio.h"
+#include "hardware/pio.h"
+
+// Headers do projeto
+#include "defines.h"
 #include "pio.h"
+#include "ws2812.pio.h"
 
 /* Buffer para armazenar quais LEDs estão ligados matriz 5x5 e configurar os números que irão aparecer na matriz
 (obs: devido a organização do diagrama, teremos que configurar as matrizes "espelhadas")*/

@@ -1,15 +1,21 @@
+// Bibliotecas padrão em C
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "pico/stdlib.h"
-#include "hardware/pwm.h"
-#include "display.h"
-#include "defines.h"
-#include "config_uart.h"
-#include "init.h"
-#include "pico/bootrom.h"
-#include "config_uart_functions.h"
 
+// Bibliotecas de hardware do Raspberry Pi Pico
+#include "hardware/pwm.h"
+#include "pico/bootrom.h"
+#include "pico/stdlib.h"
+
+// Headers do projeto
+#include "config_uart.h"
+#include "config_uart_functions.h"
+#include "defines.h"
+#include "display.h"
+#include "init.h"
+
+// Função da configuração de relatório
 int config_relatorio()
 {
     int escolha;
@@ -69,6 +75,7 @@ int config_relatorio()
     return 0;
 }
 
+// Função da configuração de temperatura
 int config_temp()
 {
     int escolha;
@@ -109,6 +116,7 @@ int config_temp()
     return 0;
 }
 
+// Função geral que coordena as configurações
 int config()
 {
     if (stdio_usb_connected())
@@ -184,7 +192,7 @@ int config()
     }
     else
     {
-        usb_off();
+        usb_off(); // Exibe uma mensagem caso o monitor serial esteja desconectado
     }
 
     printf("\n\n==============================================================Fechando Configurações==============================================================\n\n");

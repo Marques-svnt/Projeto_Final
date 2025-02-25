@@ -16,12 +16,7 @@ void joystick_init()
 {
     // Configura o ADC do joystick e o estado do botão
     adc_init();
-    adc_gpio_init(JOYSTICK_X_PIN);
     adc_gpio_init(JOYSTICK_Y_PIN);
-
-    gpio_init(JOYSTICK_PB);
-    gpio_set_dir(JOYSTICK_PB, GPIO_IN);
-    gpio_pull_up(JOYSTICK_PB);
 }
 
 // Configura o botão A e os leds

@@ -15,12 +15,9 @@
 #define VERMELHO 13
 #define BUZZER 21
 
-// Definições do joystick e microfone
+// Definições do joystick
 
-#define JOYSTICK_PB 22
-#define JOYSTICK_X_PIN 26
 #define JOYSTICK_Y_PIN 27
-#define MICROFONE 28
 
 // Definições da matriz de led
 #define NUM_PIXELS 25

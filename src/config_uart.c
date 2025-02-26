@@ -159,9 +159,9 @@ int config()
             if (verificar_config_fabrica())
             {
                 printf("As configurações já estão nos valores de fábrica:\n");
-                printf("Temperatura mínima para exibir alerta: %.2fºC\n", temp_min_fabrica);
-                printf("Temperatura máxima para exibir alerta: %.2fºC\n", temp_max_fabrica);
-                printf("Valor do incremento em relação às temperaturas máxima e mínima que serão simuladas: %.2fºC\n", incremento_fabrica);
+                printf("Temperatura mínima para exibir alerta: %.2f\n", temp_min_fabrica);
+                printf("Temperatura máxima para exibir alerta: %.2f\n", temp_max_fabrica);
+                printf("Valor do incremento em relação às temperaturas máxima e mínima que serão simuladas: %.2f\n", incremento_fabrica);
                 printf("Gerando Relatório\n");
                 printf("Unidade de medida: Celsius\n");
                 printf("Tempo entre leitura do relatório: %i segundos\n", (tempo_config_fabrica / 1000));

@@ -260,7 +260,7 @@ int show_config()
         printf("Fahrenheit\n");
         break;
     }
-    printf("Intervalo dos dados do relatório atual: %i\n", tempo_config);
+    printf("Intervalo dos dados do relatório atual: %i segundos\n", (tempo_config/1000));
     printf("\nEnvie qualquer caractere para continuar...\n");
 
     getchar();

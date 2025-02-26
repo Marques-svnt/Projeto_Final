@@ -45,32 +45,32 @@ volatile int tempo_config_temporario = tempo_config_fabrica;
 bool gerar_relatorio = 1;
 
 // Função para salvar as configurações temporárias e sair
-void save_and_quit_temp()
+int save_and_quit_temp()
 {
-    if (!(temp_min_temporario >= temp_max_temporario))
+    if (!(temp_min_temporario >= temp_max_temporario) && !(temp_max_temporario - temp_min_temporario <= incremento_temporario))
     {
         temp_min = temp_min_temporario;
         temp_max = temp_max_temporario;
         incremento = incremento_temporario;
 
-        config();
+        return config();
     }
     else
     {
         printf("Valores estão apresentando erros, redefinindo para os valores de fábrica...\n");
         temp_min_temporario = temp_min_fabrica;
         temp_max_temporario = temp_max_fabrica;
-        config_temp();
+        return config_temp();
     }
 }
 
 // Função para não salvar as alterações temporárias e retornar
-void no_save_temp()
+int no_save_temp()
 {
     temp_min_temporario = temp_min;
     temp_max_temporario = temp_max;
     incremento_temporario = incremento;
-    config();
+    return config();
 }
 
 // Função para alterar valores temporários, baseado na escolha
@@ -108,11 +108,16 @@ int alterar_valor(int alterar)
 void reset_config_fabrica()
 {
     temp_min = temp_min_fabrica;
+    temp_min_temporario = temp_min_fabrica;
     temp_max = temp_max_fabrica;
+    temp_max_temporario = temp_max_fabrica;
     incremento = incremento_fabrica;
+    incremento_temporario = incremento_fabrica;
     gerar_relatorio = 1;
     unidade_relatorio = unidade_relatorio_fabrica;
+    unidade_relatorio_temporario = unidade_relatorio_fabrica;
     tempo_config = tempo_config_fabrica;
+    tempo_config_temporario = tempo_config_fabrica;
     printf("Configurações de fábrica restauradas.\n");
 }
 
@@ -143,10 +148,10 @@ void usb_off()
 }
 
 // Função para alternar o estado de geração de relatório
-void mudar_gerar_relatorio()
+int mudar_gerar_relatorio()
 {
     gerar_relatorio = !gerar_relatorio;
-    config_relatorio();
+    return config_relatorio();
 }
 
 // Função para mudar a unidade de medida do relatório
@@ -181,7 +186,7 @@ int mudar_unidade_relatorio()
         unidade_relatorio_temporario = 3;
         break;
     }
-    config_relatorio();
+    return config_relatorio();
 }
 
 // Função para mudar o intervalo de tempo do relatório
@@ -211,24 +216,24 @@ int mudar_intervalo_relatorio()
 }
 
 // Função para salvar as configurações de relatório e sair
-void save_and_quit_relatorio()
+int save_and_quit_relatorio()
 {
     tempo_config = tempo_config_temporario;
     unidade_relatorio = unidade_relatorio_temporario;
-    config();
+    return config();
 }
 
 // Função para não salvar as configurações temporárias do relatório
-void no_save_relatorio()
+int no_save_relatorio()
 {
     gerar_relatorio = 1;
     tempo_config_temporario = tempo_config;
     unidade_relatorio_temporario = unidade_relatorio;
-    config();
+    return config();
 }
 
 // Função para exibir as configurações atuais
-void show_config()
+int show_config()
 {
     printf("Temperatura mínima atual: %.2f\n", temp_min);
     printf("Temperatura máxima atual: %.2f\n", temp_max);
@@ -262,7 +267,7 @@ void show_config()
 
     printf("Voltando às configurações...\n");
 
-    config();
+    return config();
 }
 
 // Código que garante que o número lido não cause overflow

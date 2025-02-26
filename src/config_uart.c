@@ -119,6 +119,7 @@ int config_temp()
 // Função geral que coordena as configurações
 int config()
 {
+    int exit = 0;
     if (stdio_usb_connected())
     {
         display("Configurando", 16, 25);
@@ -163,7 +164,7 @@ int config()
                 printf("Valor do incremento em relação às temperaturas máxima e mínima que serão simuladas: %.2fºC\n", incremento_fabrica);
                 printf("Gerando Relatório\n");
                 printf("Unidade de medida: Celsius\n");
-                printf("Tempo entre leitura do relatório: %i segundos\n",(tempo_config_fabrica/1000));
+                printf("Tempo entre leitura do relatório: %i segundos\n", (tempo_config_fabrica / 1000));
 
                 printf("Voltando às configurações...\n");
                 sleep_ms(2000);
@@ -187,6 +188,7 @@ int config()
             reset_usb_boot(0, 0); // Entra em modo bootsel
             break;
         case 6:
+            exit = 1;
             break;
         }
     }
@@ -194,8 +196,11 @@ int config()
     {
         usb_off(); // Exibe uma mensagem caso o monitor serial esteja desconectado
     }
-
-    printf("\n\n==============================================================Fechando Configurações==============================================================\n\n");
+    if (exit == 1)
+    {
+        printf("\n\n==============================================================Fechando Configurações==============================================================\n\n");
+        exit = 0;
+    }
     menu_init(); // configura novamente os botões do menu
     return 0;
 }

@@ -1,3 +1,6 @@
+/* Para usar corretamente a configuração via UART, abra o serial monitor e configure a opção Line ending como LF
+Para gerar os relatórios como .txt, clique na engrenagem, escolha uma pasta em Choose Log File Directory e depois ative a opção Toggle File Logging*/
+
 // Bibliotecas padrão em C
 #include <stdio.h>
 #include <stdlib.h>

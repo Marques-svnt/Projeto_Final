@@ -1,13 +1,16 @@
+// Bibliotecas padrão em C
 #include <stdlib.h>
-#include "pico/stdlib.h"
+
+// Bibliotecas de hardware do Raspberry Pi Pico
 #include "hardware/i2c.h"
-#include "ssd1306.h"
+#include "pico/stdlib.h"
+
+// Headers do projeto
 #include "defines.h"
+#include "ssd1306.h"
 
 bool cor = true;
 ssd1306_t ssd;
-
-extern bool rect_estado;
 
 void initI2C()
 {
@@ -27,30 +30,32 @@ void initI2C()
     ssd1306_send_data(&ssd);
 }
 
-// Faz o desenho do retângulo e muda o estilo dependendo do parâmetro do joystick
-void borda(bool rect_estado)
+// Função que recebe o texto e coordenadas para exibir no display a mensagem
+void display(const char *texto, int x, int y)
 {
-    if (rect_estado == true)
-    {
-        ssd1306_fill(&ssd, false);
-        ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
-        ssd1306_send_data(&ssd);                      // Atualiza o display
-    }
-    else
-    {
-        ssd1306_fill(&ssd, false);
-        ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
-        ssd1306_rect(&ssd, 1, 1, 126, 62, cor, !cor); // Desenha um retângulo
-        ssd1306_send_data(&ssd);                      // Atualiza o display
-    }
+    // Atualiza o conteúdo do display com animações
+    ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
+    ssd1306_rect(&ssd, 3, 3, 123, 59, cor, !cor);
+    ssd1306_draw_string(&ssd, texto, x, y);       // Desenha a string passada como argumento
+    ssd1306_send_data(&ssd);                      // Atualiza o display
 }
 
-// Função que recebe as coordenadas para exibir no display o quadrado
-void display(int x, int y)
+// Função que limpa o display
+void limpar()
 {
-    // Atualiza o conteúdo do display
-    ssd1306_fill(&ssd, false);                    // Limpa a tela
-    borda(rect_estado);                           // Desenha o retângulo
-    ssd1306_draw_string(&ssd, "A", x, y);         // Desenha o quadrado
+    ssd1306_fill(&ssd, false);
+    ssd1306_send_data(&ssd);
+}
+
+// Função que recebe o texto e coordenadas para exibir no display a mensagem (configurado para a temperatura)
+void display_set_temp(const char *texto, int x, int y)
+{
+    // Atualiza o conteúdo do display com animações
+    ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo
+    ssd1306_rect(&ssd, 3, 3, 123, 59, cor, !cor);
+    ssd1306_rect(&ssd, 3, 3, 122, 40, cor, !cor);
+    ssd1306_rect(&ssd, 3, 3, 122, 39, cor, !cor);
+    ssd1306_rect(&ssd, 3, 3, 122, 41, cor, !cor);
+    ssd1306_draw_string(&ssd, texto, x, y);       // Desenha a string passada como argumento
     ssd1306_send_data(&ssd);                      // Atualiza o display
 }

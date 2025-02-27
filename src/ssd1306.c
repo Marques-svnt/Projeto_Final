@@ -1,9 +1,5 @@
 #include "ssd1306.h"
-
-// Valor hexadecimal para o desenho do quadrado
-static uint8_t square[] = {
-    0x7e, 0x7e, 0x7e, 0x7e, 0x7e, 0x7e, 0x7e, 0x7e, // Quadrado
-};
+#include "font.h"
 
 void ssd1306_init(ssd1306_t *ssd, uint8_t width, uint8_t height, bool external_vcc, uint8_t address, i2c_inst_t *i2c)
 {
@@ -178,13 +174,59 @@ void ssd1306_draw_char(ssd1306_t *ssd, char c, uint8_t x, uint8_t y)
 {
   uint16_t index = 0;
   char ver = c;
-  if (c == 'A') // Usamos o 'A' para representar o quadrado
+  if (c >= 'A' && c <= 'Z')
   {
-    index = (0) * 8; // Posição do quadrado na lista
+    index = (c - 'A' + 11) * 8; // Para letras maiúsculas
+  }
+  else if (c >= '0' && c <= '9')
+  {
+    index = (c - '0' + 1) * 8; // Para números
+  }
+  else if (c >= 'a' && c <= 'z')
+  {
+    index = (c - 'a' + 37) * 8; // Para letras minúsculas
+  }
+
+  // Caracteres especiais
+  else if (c == '*') // Para o caractere 'º' (usaremos * por não ter º)
+  {
+    index = 63 * 8;  // Índice para o caractere 'º'
+  }
+  else if (c == ':') // Para o caractere ':'
+  {
+    index = 64 * 8;  // Índice para o caractere ':'
+  }
+  else if (c == '-') // Para o caractere '-'
+  {
+    index = 65 * 8;  // Índice para o caractere '-'
+  }
+  else if (c == '.') // Para o caractere '-'
+  {
+    index = 66 * 8;  // Índice para o caractere '.'
+  }
+  else if (c == '!') // Para o caractere '-'
+  {
+    index = 67 * 8;  // Índice para o caractere '.'
+  }
+  else if (c == '(') // Para o caractere '('
+  {
+    index = 68 * 8;  // Índice para o caractere '(' representando sinal de alerta
+  }
+  else if (c == ')') // Para o caractere ')'
+  {
+    index = 69 * 8;  // Índice para o caractere ')' representando sinal de alerta
+  }
+  else if (c == '>') // Para o caractere '>'
+  {
+    index = 70 * 8;  // Índice para o caractere '>' representando uma ->
+  }
+  else if (c == '<') // Para o caractere '<'
+  {
+    index = 71 * 8;  // Índice para o caractere '<' representando uma <-
   }
   for (uint8_t i = 0; i < 8; ++i)
   {
-    uint8_t line = square[index + i];
+    uint8_t line = font[index + i];
     for (uint8_t j = 0; j < 8; ++j)
     {
       ssd1306_pixel(ssd, x + i, y + j, line & (1 << j));

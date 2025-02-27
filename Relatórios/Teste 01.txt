@@ -1,0 +1,84 @@
+
+
+===================================================================Relatório===================================================================
+
+[00:00:06] Temperatura crítica! Temperatura: 0.00ºC, ultrapassou os limites. Variação: 0.00ºC
+
+[00:00:07] Temperatura estava crítica em 0.00ºC, porém estabilizou para 4.46ºC
+
+[00:00:08] Temperatura normal: 4.47ºC. Variação: 0.00ºC
+
+[00:00:09] Temperatura normal: 4.47ºC. Variação: 0.00ºC
+
+[00:00:11] Temperatura normal: 4.46ºC. Variação: -0.01ºC
+
+[00:00:12] Temperatura normal: 4.47ºC. Variação: 0.01ºC
+
+[00:00:13] Temperatura normal: 4.47ºC. Variação: 0.00ºC
+
+[00:00:14] Temperatura normal: 4.47ºC. Variação: 0.00ºC
+
+[00:00:15] Temperatura normal: 4.46ºC. Variação: -0.00ºC
+
+[00:00:16] Temperatura normal: 4.47ºC. Variação: 0.00ºC
+
+[00:00:17] Temperatura normal: 7.29ºC. Variação: 2.82ºC
+
+[00:00:18] Temperatura crítica! Temperatura: 12.88ºC, ultrapassou os limites. Variação: 5.59ºC
+
+[00:00:19] Temperatura ainda fora do limite. Temperatura: 12.92ºC. Variação: 0.04ºC
+
+[00:00:20] Temperatura estava crítica em 12.92ºC, porém estabilizou para 7.50ºC
+
+[00:00:21] Temperatura normal: 6.48ºC. Variação: -1.02ºC
+
+[00:00:22] Temperatura normal: 4.36ºC. Variação: -2.12ºC
+
+[00:00:23] Temperatura crítica! Temperatura: 1.53ºC, ultrapassou os limites. Variação: -2.84ºC
+
+[00:00:24] Temperatura ainda fora do limite. Temperatura: -1.14ºC. Variação: -2.66ºC
+
+[00:00:25] Temperatura ainda fora do limite. Temperatura: -2.96ºC. Variação: -1.82ºC
+
+[00:00:26] Temperatura ainda fora do limite. Temperatura: -2.96ºC. Variação: 0.00ºC
+
+[00:00:27] Temperatura ainda fora do limite. Temperatura: -1.24ºC. Variação: 1.72ºC
+
+[00:00:28] Temperatura estava crítica em -1.24ºC, porém estabilizou para 2.86ºC
+
+[00:00:29] Temperatura normal: 7.19ºC. Variação: 4.33ºC
+
+[00:00:30] Temperatura crítica! Temperatura: 12.91ºC, ultrapassou os limites. Variação: 5.71ºC
+
+[00:00:31] Temperatura ainda fora do limite. Temperatura: 12.92ºC. Variação: 0.01ºC
+
+[00:00:32] Temperatura ainda fora do limite. Temperatura: 9.50ºC. Variação: -3.41ºC
+
+[00:00:33] Temperatura estava crítica em 9.50ºC, porém estabilizou para 6.11ºC
+
+[00:00:35] Temperatura crítica! Temperatura: 1.05ºC, ultrapassou os limites. Variação: -5.06ºC
+
+[00:00:36] Temperatura ainda fora do limite. Temperatura: -2.96ºC. Variação: -4.01ºC
+
+[00:00:37] Temperatura ainda fora do limite. Temperatura: 0.59ºC. Variação: 3.55ºC
+
+[00:00:38] Temperatura ainda fora do limite. Temperatura: 8.13ºC. Variação: 7.55ºC
+
+[00:00:39] Temperatura ainda fora do limite. Temperatura: 10.69ºC. Variação: 2.56ºC
+
+[00:00:40] Temperatura estava crítica em 10.69ºC, porém estabilizou para 4.48ºC
+
+[00:00:41] Temperatura normal: 4.48ºC. Variação: 0.00ºC
+
+[00:00:42] Temperatura normal: 4.48ºC. Variação: 0.00ºC
+
+[00:00:43] Temperatura normal: 4.48ºC. Variação: -0.00ºC
+
+[00:00:44] Temperatura normal: 4.48ºC. Variação: 0.00ºC
+
+[00:00:45] Temperatura normal: 4.48ºC. Variação: 0.00ºC
+
+[00:00:46] Temperatura normal: 4.48ºC. Variação: 0.00ºC
+
+================================================================================================================================================
+

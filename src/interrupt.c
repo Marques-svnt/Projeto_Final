@@ -1,22 +1,51 @@
+// Bibliotecas padrão em C
 #include <stdio.h>
+
+// Bibliotecas de hardware do Raspberry Pi Pico
 #include "pico/stdlib.h"
+
+// Headers do projeto
 #include "defines.h"
 #include "display.h"
-#include "pwm.h"
+#include "pio.h"
+
+// Variável global para armazenar a cor (Entre 0 e 255 para intensidade)
+uint8_t led_r = 0;  // Intensidade do vermelho
+uint8_t led_g = 0;  // Intensidade do verde
+uint8_t led_b = 20; // Intensidade do azul
 
 // Variáveis globais
-static volatile uint a = 1;
-static volatile uint j = 1;
 static volatile uint32_t last_time_A = 0; // Armazena o tempo do último evento (em microssegundos)
-static volatile uint32_t last_time_J = 0;
-bool led_estado = true;
-bool rect_estado = true;
-bool estado_verde = false;
+static volatile uint32_t last_time_B = 0;
+volatile int choose = 1; // Controla a escolha do menu, variando entre 1 e 2
+
+extern int state;  // Variável global de controle de estado da máquina de estados
+
+// Função para exibir o menu baseado na escolha
+void display_menu()
+{
+    switch (choose)
+    {
+    case 1:
+        limpar();
+        display("Sensor", 40, 15);
+        display("Temperatura", 20, 25);
+        display(" <     B     >",4,45);
+        break;
+    case 2:
+        limpar();
+        display("Configurar", 24, 20);
+        display(" <     B     >",4,45);
+        break;
+    }
+}
 
 // Função responsável pelo debounce
-bool debounce(volatile uint32_t *last_time, uint32_t debounce_time) {
+bool debounce(volatile uint32_t *last_time, uint32_t debounce_time)
+{
     uint32_t current_time = to_us_since_boot(get_absolute_time());
-    if (current_time - *last_time > debounce_time) {
+    if (current_time - *last_time > debounce_time)
+    {
         *last_time = current_time;
         return true;
     }
@@ -28,35 +57,22 @@ void gpio_irq_handler(uint gpio, uint32_t events)
 {
     uint32_t current_time = to_us_since_boot(get_absolute_time());
 
-    // Desligar ou ligar os leds de ligarem ao apertar o joystick
-    if (gpio == BUTTON_A && debounce(&last_time_A, 200000))
+    // Incrementação do número da matriz de leds
+    if (gpio == BUTTON_A && debounce(&last_time_A, 300000))
     {
         last_time_A = current_time;
-        printf("Botão A pressionado: %d vezes\n", a); // Para controle quando se usa o monitor serial para verificar se há bouncing
-        a++;
-        led_estado = !led_estado;
-        
-        if (led_estado == true){
-            printf("Ligando os leds PWM\n");
-        } else {
-            printf("Desligando os leds PWM\n");
-        }
-
-    } else if (gpio == JOYSTICK_PB && debounce(&last_time_J, 200000))
+        state = choose; // Atribui ao estado de maquina o valor atual do menu ao pressionar o joystick
+        set_one_led(0, 0, 0, 0); // Limpa a matriz de leds
+        limpar(); // Limpa o display
+    }
+    // Decrementação do número da matriz de leds
+    else if (gpio == BUTTON_B && debounce(&last_time_B, 300000))
     {
-        last_time_J = current_time;
-        printf("Joystick pressionado: %d vezes\nAlterando a borda do retângulo", j); // Para controle quando se usa o monitor serial para verificar se há bouncing
-        j++;
-        rect_estado = !rect_estado; // Muda o estado do retângulo para alterar o estilo
+        last_time_B = current_time;
 
-        // Liga ou desliga o led verde
-        estado_verde = !estado_verde; 
-        gpio_put(VERDE, estado_verde);
+        choose = (choose % 2) + 1; // Alterna entre 1 e 2, para alternar entre os menus
 
-        if(estado_verde == true){
-            printf(" e ligando o led verde\n");
-        } else {
-            printf(" e desligando o led verde\n");
-        }
+        set_one_led(choose, led_r, led_g, led_b);
+        display_menu(choose);
     }
 }
